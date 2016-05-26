@@ -4,19 +4,68 @@ import JJ
 
 class Tests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    func testObject() {
+        let json = ["firstName": "Yury", "lastName": "Korolev"] as [String: AnyObject]
+
+        let obj = try! jj(json).obj()
+
+        XCTAssertEqual("Yury",    try! obj["firstName"].string())
+        XCTAssertEqual("Korolev", try! obj["lastName"].string())
+        XCTAssertEqual(2, obj.count)
+        XCTAssertEqual(true, obj.exists)
+        XCTAssertEqual("", obj.path)
+        XCTAssertEqual(json.debugDescription, obj.raw.debugDescription)
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    func testArray() {
+        let json = [1, "Nice", 5.5, NSNull(), "http://anjlab.com"] as [AnyObject]
+
+        let arr = try! jj(json).arr()
+        
+        XCTAssertEqual(1, try! arr[0].int())
+        XCTAssertEqual("Nice", try! arr[1].string())
+        XCTAssertEqual(5.5, try! arr[2].double())
+        XCTAssertEqual(true, arr[3].isNull)
+        XCTAssertEqual(NSURL(string: "http://anjlab.com"), try! arr[4].url())
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
+    func testErrors() {
+        let json = ["firstName": "Yury", "lastName": "Korolev"]
+        let obj = try! jj(json).obj()
+        
+        XCTAssertEqual(false, obj["unknownKey"].exists)
+    
+        do {
+            let _ = try obj["unknownKey"].string()
+            XCTFail()
+        } catch {
+            let err = "\(error)"
+            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '.unknownKey' to type 'String'", err)
+        }
+        
+        do {
+            let _ = try obj["unknownKey"].date()
+            XCTFail()
+        } catch {
+            let err = "\(error)"
+            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '.unknownKey' to type 'NSDate'", err)
+        }
+        
+        do {
+            let _ = try obj["unknownKey"].url()
+            XCTFail()
+        } catch {
+            let err = "\(error)"
+            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '.unknownKey' to type 'NSURL'", err)
+        }
+        
+        do {
+            let _ = try jj(json).arr()
+            XCTFail()
+        } catch {
+            let err = "\(error)"
+            XCTAssertEqual("JJError.WrongType: Can't convert Optional({\n    firstName = Yury;\n    lastName = Korolev;\n}) at path: '' to type '[AnyObject]'", err)
+        }
     }
     
     func testPerformanceExample() {

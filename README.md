@@ -11,6 +11,8 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
+Do depencies. You can copy JJ.swift into your project if you want.
+
 ## Installation
 
 JJ is available through [CocoaPods](http://cocoapods.org). To install

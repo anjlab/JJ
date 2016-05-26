@@ -1,0 +1,22 @@
+{
+  "name": "JJ",
+  "version": "0.1.0",
+  "summary": "A short description of JJ.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/<GITHUB_USERNAME>/JJ",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Yury Korolev": "yury.korolev@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/anjlab/JJ.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "JJ/Classes/**/*"
+}

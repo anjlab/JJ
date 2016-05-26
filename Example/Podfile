@@ -5,7 +5,7 @@ target 'JJ_Example' do
 
   target 'JJ_Tests' do
     inherit! :search_paths
+    pod 'JJ', :path => '../'
 
-    pod 'FBSnapshotTestCase'
   end
 end

@@ -9,34 +9,20 @@
 Pod::Spec.new do |s|
   s.name             = 'JJ'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of JJ.'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
+  s.summary          = 'Super simple json parsing and NSCoder encoding and decoding.'
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+Super simple json parser for Swift (may be 501 or more)
+And more: simple tools for NSCoder
                        DESC
 
-  s.homepage         = 'https://github.com/<GITHUB_USERNAME>/JJ'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+  s.homepage         = 'https://github.com/anjlab/JJ'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Yury Korolev' => 'yury.korolev@gmail.com' }
-  s.source           = { :git => 'https://github.com/<GITHUB_USERNAME>/JJ.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.source           = { :git => 'https://github.com/anjlab/JJ.git', :tag => s.version.to_s }
+  s.social_media_url = 'https://twitter.com/anjlab'
 
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'JJ/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'JJ' => ['JJ/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end

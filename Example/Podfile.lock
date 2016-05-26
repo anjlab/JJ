@@ -1,0 +1,16 @@
+PODS:
+  - JJ (0.1.0)
+
+DEPENDENCIES:
+  - JJ (from `../`)
+
+EXTERNAL SOURCES:
+  JJ:
+    :path: ../
+
+SPEC CHECKSUMS:
+  JJ: 5c30a967aeb78ec058cd8d0ac015f1b1f1463d0a
+
+PODFILE CHECKSUM: 2f536e0c0aa5e3e0862c2d75f59a427fc9e385ae
+
+COCOAPODS: 1.0.0
