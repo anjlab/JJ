@@ -1,6 +1,6 @@
 # JJ
 
-[![CI Status](http://img.shields.io/travis/Yury Korolev/JJ.svg?style=flat)](https://travis-ci.org/Yury Korolev/JJ)
+[![CI Status](http://img.shields.io/travis/anjlab/JJ.svg?style=flat)](https://travis-ci.org/anjlab/JJ)
 [![Version](https://img.shields.io/cocoapods/v/JJ.svg?style=flat)](http://cocoapods.org/pods/JJ)
 [![License](https://img.shields.io/cocoapods/l/JJ.svg?style=flat)](http://cocoapods.org/pods/JJ)
 [![Platform](https://img.shields.io/cocoapods/p/JJ.svg?style=flat)](http://cocoapods.org/pods/JJ)
