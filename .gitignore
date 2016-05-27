@@ -19,6 +19,8 @@ DerivedData
 *.hmap
 *.ipa
 
+Example/test_output/
+
 # Bundler
 .bundle
 
