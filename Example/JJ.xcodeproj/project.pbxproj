@@ -46,6 +46,8 @@
 		AED2008070241841F6825CCE /* Pods_JJ_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JJ_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C61CCDD06A0DD110234ADD91 /* Pods-JJ_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JJ_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-JJ_Example/Pods-JJ_Example.release.xcconfig"; sourceTree = "<group>"; };
 		D2F372151CF7A42900106084 /* JJ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JJ.framework; path = "../../../Library/Developer/Xcode/DerivedData/JJ-ghlzmicrdmboehgtelynareslstl/Build/Products/Debug-iphonesimulator/JJ/JJ.framework"; sourceTree = "<group>"; };
+		D2F3721F1CF8452700106084 /* JJ.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JJ.h; sourceTree = "<group>"; };
+		D2F372211CF8452700106084 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DF55C51D19DE841D02B41BC8 /* Pods-JJ_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JJ_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JJ_Tests/Pods-JJ_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		EDCC661C6114ACF5E1BD7108 /* Pods-JJ_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JJ_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JJ_Tests/Pods-JJ_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		F9232CF88AD8E160212FB4B3 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for JJ */,
 				607FACE81AFB9204008FA782 /* Tests */,
+				D2F3721E1CF8452700106084 /* JJ */,
 				607FACD11AFB9204008FA782 /* Products */,
 				9A287D668119C4EFCD64595D /* Pods */,
 				C76A969DF0356C9AA85A8775 /* Frameworks */,
@@ -161,6 +164,15 @@
 				5B0A7A17A9C31E287CC9B611 /* Pods_JJ_Tests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D2F3721E1CF8452700106084 /* JJ */ = {
+			isa = PBXGroup;
+			children = (
+				D2F3721F1CF8452700106084 /* JJ.h */,
+				D2F372211CF8452700106084 /* Info.plist */,
+			);
+			path = JJ;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
