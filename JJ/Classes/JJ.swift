@@ -522,6 +522,10 @@ public struct JJDecVal {
         }
         throw JJError.WrongType(v: v, path: _key, toType: "NSDate")
     }
+    
+    // extension point
+    var decoder: NSCoder { return _dec }
+    var key: String { return _key }
 }
 
 public struct JJDec {
