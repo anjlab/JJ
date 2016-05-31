@@ -504,6 +504,16 @@ public struct JJDecVal {
     public func toBool() -> Bool { return _dec.decodeBoolForKey(_key) }
 
     public func decodeAs<T: NSCoding>() -> T? { return _dec.decodeObjectForKey(_key) as? T }
+    
+    public func decode<T: NSCoding>() throws -> T {
+        let obj = _dec.decodeObjectForKey(_key)
+        if let v:T = obj as? T {
+            return v
+        }
+       
+        // TODO: find a way to get type
+        throw JJError.WrongType(v: obj, path: _key, toType: "T")
+    }
 
     public func date() throws -> NSDate {
         let v = _dec.decodeObjectForKey(_key)
