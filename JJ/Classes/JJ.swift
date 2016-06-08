@@ -204,7 +204,7 @@ public struct JJVal: CustomDebugStringConvertible {
 
     public var asBool: Bool? { return _v as? Bool }
 
-    public func toBool(@autoclosure defaultValue:  () -> Bool = true) -> Bool {
+    public func toBool(@autoclosure defaultValue:  () -> Bool = false) -> Bool {
         return asBool ?? defaultValue()
     }
 

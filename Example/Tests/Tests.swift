@@ -5,13 +5,18 @@ import JJ
 class Tests: XCTestCase {
 
     func testObject() {
-        let json = ["firstName": "Yury", "lastName": "Korolev"] as [String: AnyObject]
+        let json = ["firstName": "Yury", "lastName": "Korolev", "trueFlag": true, "falseFlag": false] as [String: AnyObject]
 
         let obj = try! jj(json).obj()
 
         XCTAssertEqual("Yury",    try! obj["firstName"].string())
         XCTAssertEqual("Korolev", try! obj["lastName"].string())
-        XCTAssertEqual(2, obj.count)
+        XCTAssertEqual(true, try! obj["trueFlag"].bool())
+        XCTAssertEqual(false, try! obj["falseFlag"].bool())
+        XCTAssertEqual(true, obj["trueFlag"].toBool())
+        XCTAssertEqual(false, obj["falseFlag"].toBool())
+        XCTAssertEqual(false, obj["unknown"].toBool())
+        XCTAssertEqual(4, obj.count)
         XCTAssertEqual(true, obj.exists)
         XCTAssertEqual("<root>", obj.path)
         XCTAssertEqual(json.debugDescription, obj.raw.debugDescription)
