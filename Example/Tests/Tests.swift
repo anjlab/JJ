@@ -12,6 +12,8 @@ class Tests: XCTestCase {
         
         XCTAssertEqual("[\"firstName\": Yury, \"lastName\": Korolev]", o.raw.debugDescription)
         XCTAssertEqual("{\n  \"firstName\": \"Yury\",\n  \"lastName\": \"Korolev\"\n}", o.debugDescription)
+        XCTAssertEqual("{\n  \"firstName\": \"Yury\",\n  \"lastName\": \"Korolev\"\n}", o.prettyPrint())
+        XCTAssertEqual("{\n  \"firstName\": \"Yury\",\n  \"lastName\": \"Korolev\"\n}", o.prettyPrint(space: "", spacer: "  "))
         
         let json = [
             "firstName": "Yury",
@@ -66,6 +68,7 @@ class Tests: XCTestCase {
         XCTAssertEqual(NSURL(string: "http://anjlab.com"), obj["url"].toURL())
         XCTAssertEqual(NSURL(string: "http://anjlab.com"), obj["url"].asURL)
         XCTAssertEqual(NSTimeZone(name: "Europe/Moscow"), obj["zone"].asTimeZone)
+        XCTAssertEqual(nil, obj["unknownKey"].asTimeZone)
         XCTAssertEqual(nil, obj["unknownKey"].asURL)
         XCTAssertEqual(true, obj["obj"].toObj().exists)
         XCTAssertEqual("Optional([\"value\": 1])", obj["obj"].toObj().raw.debugDescription)
@@ -79,10 +82,6 @@ class Tests: XCTestCase {
         XCTAssertEqual("<root>.url", obj["url"].path)
         XCTAssertEqual(json["firstName"].debugDescription, obj["firstName"].raw.debugDescription)
         XCTAssertEqual("\"Yury\"", obj["firstName"].debugDescription)
-    }
-    
-    func testDecEnc() {
-       
     }
     
     func testArray() {
@@ -107,6 +106,48 @@ class Tests: XCTestCase {
         XCTAssertEqual(true, arr[1].exists)
         XCTAssertEqual("<root>", arr.path)
         XCTAssertEqual("[\n  1,\n  \"Nice\",\n  5.5,\n  null,\n  \"http://anjlab.com\"\n]", arr.prettyPrint())
+        XCTAssertEqual("[\n  1,\n  \"Nice\",\n  5.5,\n  null,\n  \"http://anjlab.com\"\n]", arr.prettyPrint(space: "", spacer: "  "))
+    }
+    
+    func testDecEnc() {
+        let data = NSMutableData()
+        let coder = NSKeyedArchiver(forWritingWithMutableData: data)
+        
+        let enc = jj(encoder: coder)
+        
+        enc.put("Title", at: "title")
+        enc.put("Nice", at: "text")
+        enc.put(String.asRFC3339Date("2016-06-10T00:00:00.000Z")(), at: "date")
+        enc.put(false, at: "boolValue")
+        enc.put(13, at: "number")
+        
+        coder.finishEncoding()
+        
+        let decoder = NSKeyedUnarchiver(forReadingWithData: data)
+        
+        let dec = jj(decoder: decoder)
+
+        XCTAssertEqual("Nice", try! dec["text"].string())
+        XCTAssertEqual(nil, dec["unknownKey"].asString)
+        XCTAssertEqual(13, try! dec["number"].int())
+        XCTAssertEqual(nil, dec["unknownKey"].asInt)
+        XCTAssertEqual(nil, dec["unknownKey"].asDate)
+        XCTAssertEqual(nil, dec["unknownKey"].asURL)
+        XCTAssertEqual(String.asRFC3339Date("2016-06-10T00:00:00.000Z")(), try! dec["date"].date())
+        XCTAssertEqual(String.asRFC3339Date("2016-06-10T00:00:00.000Z")(), dec["date"].asDate)
+        XCTAssertEqual(nil, dec["unknownKey"].asTimeZone)
+        XCTAssertEqual(false, try! dec["boolValue"].bool())
+        XCTAssertEqual(false, dec["boolValue"].toBool())
+
+        //Errors
+        
+        do {
+            let _ = try dec["unknownKey"].date()
+            XCTFail()
+        } catch {
+            let err = "\(error)"
+            XCTAssertEqual("JJError.WrongType: Can\'t convert nil at path: \'unknownKey\' to type \'NSDate\'", err)
+        }
     }
     
     func testErrors() {
