@@ -39,6 +39,7 @@ class Tests: XCTestCase {
         XCTAssertEqual(false, obj["falseFlag"].toBool())
         XCTAssertEqual(true, obj["trueFlag"].asBool)
         XCTAssertEqual(false, obj["falseFlag"].asBool)
+        XCTAssertEqual(false, obj["unknown"].toBool())
         XCTAssertEqual(13, try! obj["intValue"].int())
         XCTAssertEqual(13, obj["intValue"].toInt())
         XCTAssertEqual(13, obj["intValue"].asInt)
@@ -66,13 +67,22 @@ class Tests: XCTestCase {
         XCTAssertEqual(NSURL(string: "http://anjlab.com"), obj["url"].asURL)
         XCTAssertEqual(NSTimeZone(name: "Europe/Moscow"), obj["zone"].asTimeZone)
         XCTAssertEqual(nil, obj["unknownKey"].asURL)
-        XCTAssertEqual(false, obj["unknown"].toBool())
+        XCTAssertEqual(true, obj["obj"].toObj().exists)
+        XCTAssertEqual("Optional([\"value\": 1])", obj["obj"].toObj().raw.debugDescription)
+        XCTAssertEqual("<root>.obj", obj["obj"].toObj().path)
+        XCTAssertEqual(true, obj["arr"].toArr().exists)
+        XCTAssertEqual("[1, 2, 3]", obj["arr"].toArr().raw?.debugDescription)
+        XCTAssertEqual("<root>.arr", obj["arr"].toArr().path)
         XCTAssertEqual(11, obj.count)
         XCTAssertEqual(true, obj.exists)
         XCTAssertEqual("<root>", obj.path)
         XCTAssertEqual("<root>.url", obj["url"].path)
         XCTAssertEqual(json["firstName"].debugDescription, obj["firstName"].raw.debugDescription)
         XCTAssertEqual("\"Yury\"", obj["firstName"].debugDescription)
+    }
+    
+    func testDecEnc() {
+       
     }
     
     func testArray() {
