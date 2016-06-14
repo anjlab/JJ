@@ -117,6 +117,7 @@ class Tests: XCTestCase {
         
         enc.put("Title", at: "title")
         enc.put("Nice", at: "text")
+        enc.put(["key" : "value"], at: "obj")
         enc.put(String.asRFC3339Date("2016-06-10T00:00:00.000Z")(), at: "date")
         enc.put(false, at: "boolValue")
         enc.put(13, at: "number")
@@ -126,7 +127,7 @@ class Tests: XCTestCase {
         let decoder = NSKeyedUnarchiver(forReadingWithData: data)
         
         let dec = jj(decoder: decoder)
-
+        
         XCTAssertEqual("Nice", try! dec["text"].string())
         XCTAssertEqual(nil, dec["unknownKey"].asString)
         XCTAssertEqual(13, try! dec["number"].int())
@@ -138,6 +139,10 @@ class Tests: XCTestCase {
         XCTAssertEqual(nil, dec["unknownKey"].asTimeZone)
         XCTAssertEqual(false, try! dec["boolValue"].bool())
         XCTAssertEqual(false, dec["boolValue"].toBool())
+        XCTAssertEqual(decoder, dec["boolValue"].decoder)
+        XCTAssertEqual("boolValue", dec["boolValue"].key)
+//        XCTAssertEqual(["key" : "value"], try! dec["obj"].decode())
+        XCTAssertEqual(["key" : "value"], dec["obj"].decodeAs())
 
         //Errors
         
