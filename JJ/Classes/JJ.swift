@@ -91,7 +91,7 @@ public struct JJArr: CustomDebugStringConvertible {
             str += "\(nextSpace)" + jj(v).prettyPrint(space: nextSpace, spacer: spacer) + ",\n"
         }
         str.removeAtIndex(str.endIndex.advancedBy(-2))
-        return str + "\(space)}"
+        return str + "\(space)]"
     }
 
     public var debugDescription: String { return prettyPrint() }
