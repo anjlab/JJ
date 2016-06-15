@@ -10,10 +10,10 @@ class Tests: XCTestCase {
         
         let o = try! jj(j).obj()
         
-        XCTAssertEqual("[\"firstName\": Yury, \"lastName\": Korolev]", o.raw.debugDescription)
-        XCTAssertEqual("{\n  \"firstName\": \"Yury\",\n  \"lastName\": \"Korolev\"\n}", o.debugDescription)
-        XCTAssertEqual("{\n  \"firstName\": \"Yury\",\n  \"lastName\": \"Korolev\"\n}", o.prettyPrint())
-        XCTAssertEqual("{\n  \"firstName\": \"Yury\",\n  \"lastName\": \"Korolev\"\n}", o.prettyPrint(space: "", spacer: "  "))
+        XCTAssertEqual("[\"lastName\": Korolev, \"firstName\": Yury]", o.raw.debugDescription)
+        XCTAssertEqual("{\n  \"lastName\": \"Korolev\",\n  \"firstName\": \"Yury\"\n}", o.debugDescription)
+        XCTAssertEqual("{\n  \"lastName\": \"Korolev\",\n  \"firstName\": \"Yury\"\n}", o.prettyPrint())
+        XCTAssertEqual("{\n  \"lastName\": \"Korolev\",\n  \"firstName\": \"Yury\"\n}", o.prettyPrint(space: "", spacer: "  "))
         
         let json = [
             "firstName": "Yury",
@@ -72,13 +72,13 @@ class Tests: XCTestCase {
         XCTAssertEqual(String.asRFC3339Date("2016-06-10T00:00:00.000Z")(), try! obj["date"].date())
         XCTAssertEqual(String.asRFC3339Date("2016-06-10T00:00:00.000Z")(), obj["date"].asDate)
         XCTAssertEqual("2016-06-10T00:00:00.000Z", String.asRFC3339Date("2016-06-10T00:00:00.000Z")()?.toRFC3339String())
-        XCTAssertEqual(NSURL(string: "http://anjlab.com"), try! obj["url"].url())
+        XCTAssertEqual(URL(string: "http://anjlab.com"), try! obj["url"].url())
         XCTAssertEqual(nil, try? obj["unknownKey"].url())
-        XCTAssertEqual(NSURL(string: "http://anjlab.com"), obj["url"].toURL())
-        XCTAssertEqual(NSURL(), obj["unknownKey"].toURL(NSURL()))
-        XCTAssertEqual(NSURL(string: "http://anjlab.com"), obj["url"].asURL)
+        XCTAssertEqual(URL(string: "http://anjlab.com"), obj["url"].toURL())
+        XCTAssertEqual(URL(string: ""), obj["unknownKey"].toURL(URL(string: "")!))
+        XCTAssertEqual(URL(string: "http://anjlab.com"), obj["url"].asURL)
         XCTAssertEqual(nil, obj["unknownKey"].asURL)
-        XCTAssertEqual(NSTimeZone(name: "Europe/Moscow"), obj["zone"].asTimeZone)
+        XCTAssertEqual(TimeZone(name: "Europe/Moscow"), obj["zone"].asTimeZone)
         XCTAssertEqual(nil, obj["unknownKey"].asTimeZone)
         XCTAssertEqual(true, obj["obj"].toObj().exists)
         XCTAssertEqual("[\"value\": 1]", try! obj["obj"].obj().raw.debugDescription)
@@ -114,7 +114,7 @@ class Tests: XCTestCase {
         XCTAssertEqual("Nice", try! arr[1].string())
         XCTAssertEqual(5.5, try! arr[2].double())
         XCTAssertEqual(true, arr[3].isNull)
-        XCTAssertEqual(NSURL(string: "http://anjlab.com"), try! arr[4].url())
+        XCTAssertEqual(URL(string: "http://anjlab.com"), try! arr[4].url())
         XCTAssertEqual(5, arr.count)
         XCTAssertEqual(true, arr.exists)
         XCTAssertEqual(true, arr[1].exists)
@@ -126,7 +126,7 @@ class Tests: XCTestCase {
     
     func testDecEnc() {
         let data = NSMutableData()
-        let coder = NSKeyedArchiver(forWritingWithMutableData: data)
+        let coder = NSKeyedArchiver(forWritingWith: data)
         
         let enc = jj(encoder: coder)
         
@@ -134,12 +134,12 @@ class Tests: XCTestCase {
         enc.put("Nice", at: "text")
         enc.put(["key" : "value"], at: "obj")
         enc.put(String.asRFC3339Date("2016-06-10T00:00:00.000Z")(), at: "date")
-        enc.put(false, at: "boolValue")
-        enc.put(13, at: "number")
+        enc.put(bool: false, at: "boolValue")
+        enc.put(int: 13, at: "number")
         
         coder.finishEncoding()
         
-        let decoder = NSKeyedUnarchiver(forReadingWithData: data)
+        let decoder = NSKeyedUnarchiver(forReadingWith: data as Data)
         
         let dec = jj(decoder: decoder)
         
@@ -166,7 +166,7 @@ class Tests: XCTestCase {
             XCTFail()
         } catch {
             let err = "\(error)"
-            XCTAssertEqual("JJError.WrongType: Can\'t convert nil at path: \'unknownKey\' to type \'NSDate\'", err)
+            XCTAssertEqual("JJError.WrongType: Can\'t convert nil at path: \'unknownKey\' to type \'Date\'", err)
         }
         
         do {
@@ -205,7 +205,7 @@ class Tests: XCTestCase {
             XCTFail()
         } catch {
             let err = "\(error)"
-            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '<root>.unknownKey' to type 'NSDate'", err)
+            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '<root>.unknownKey' to type 'Date'", err)
         }
         
         do {
@@ -213,7 +213,7 @@ class Tests: XCTestCase {
             XCTFail()
         } catch {
             let err = "\(error)"
-            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '<root>.unknownKey' to type 'NSURL'", err)
+            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '<root>.unknownKey' to type 'URL'", err)
         }
         
         do {
@@ -221,7 +221,7 @@ class Tests: XCTestCase {
             XCTFail()
         } catch {
             let err = "\(error)"
-            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '<root>.nested<nil>.unknown<nil>[0]' to type 'NSURL'", err)
+            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '<root>.nested<nil>.unknown<nil>[0]' to type 'URL'", err)
         }
         
         do {
@@ -277,13 +277,13 @@ class Tests: XCTestCase {
             XCTFail()
         } catch {
             let err = "\(error)"
-            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '<root>.unknownKey' to type 'NSNumber'", err)
+            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '<root>.unknownKey' to type 'Number'", err)
         }
     }
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock() {
+        self.measure() {
             // Put the code you want to measure the time of here.
         }
     }
