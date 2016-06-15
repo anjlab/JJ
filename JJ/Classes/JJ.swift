@@ -205,7 +205,7 @@ public struct JJVal: CustomDebugStringConvertible {
 
     public var asBool: Bool? { return _v as? Bool }
 
-    public func toBool(@autoclosure _ defaultValue:  () -> Bool = false) -> Bool {
+    public func toBool(_ defaultValue:  @autoclosure() -> Bool = false) -> Bool {
         return asBool ?? defaultValue()
     }
 
@@ -221,7 +221,7 @@ public struct JJVal: CustomDebugStringConvertible {
 
     public var asInt: Int? { return _v as? Int }
 
-    public func toInt(@autoclosure _ defaultValue:  () -> Int = 0) -> Int {
+    public func toInt(_ defaultValue:  @autoclosure() -> Int = 0) -> Int {
         return asInt ?? defaultValue()
     }
 
@@ -236,7 +236,7 @@ public struct JJVal: CustomDebugStringConvertible {
 
     public var asUInt: UInt? { return _v as? UInt }
 
-    public func toUInt(@autoclosure _ defaultValue:  () -> UInt = 0) -> UInt {
+    public func toUInt(_ defaultValue:  @autoclosure() -> UInt = 0) -> UInt {
         return asUInt ?? defaultValue()
     }
 
@@ -251,7 +251,7 @@ public struct JJVal: CustomDebugStringConvertible {
 
     public var asNumber: NSNumber? { return _v as? NSNumber }
 
-    public func toNumber(@autoclosure _ defaultValue:  () -> NSNumber = 0) -> NSNumber {
+    public func toNumber(_ defaultValue:  @autoclosure() -> NSNumber = 0) -> NSNumber {
         return asNumber ?? defaultValue()
     }
 
@@ -266,7 +266,7 @@ public struct JJVal: CustomDebugStringConvertible {
 
     public var asFloat: Float? { return _v as? Float }
 
-    public func toFloat(@autoclosure _ defaultValue:  () -> Float = 0) -> Float {
+    public func toFloat(_ defaultValue:  @autoclosure() -> Float = 0) -> Float {
         return asFloat ?? defaultValue()
     }
 
@@ -281,7 +281,7 @@ public struct JJVal: CustomDebugStringConvertible {
 
     public var asDouble: Double? { return _v as? Double }
 
-    public func toDouble(@autoclosure _ defaultValue:  () -> Double = 0) -> Double {
+    public func toDouble(_ defaultValue:  @autoclosure() -> Double = 0) -> Double {
         return asDouble ?? defaultValue()
     }
 
@@ -339,7 +339,7 @@ public struct JJVal: CustomDebugStringConvertible {
 
     public var asString: String? { return _v as? String }
 
-    public func toString(@autoclosure _ defaultValue:  () -> String = "") -> String {
+    public func toString(_ defaultValue:  @autoclosure() -> String = "") -> String {
         return asString ?? defaultValue()
     }
 
@@ -372,7 +372,7 @@ public struct JJVal: CustomDebugStringConvertible {
         }
     }
 
-    public func toURL(@autoclosure _ defaultValue:  () -> URL = URL(string: "")!) -> URL {
+    public func toURL(_ defaultValue:  @autoclosure() -> URL = URL(string: "")!) -> URL {
         return asURL ?? defaultValue()
     }
 
