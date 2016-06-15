@@ -52,6 +52,26 @@ struct Repository {
 ### Features
 - Informative errors
 - Decoding depends on inferred type
+- Leverages Swift 2's error handling
+
+### Errors
+`JJError` conforming `ErrorType` and there are currently two error-structs conforming to it
+- `WrongType`
+- `NotFound`
+
+```swift
+let json = 1
+
+do {
+    let _ = try jj(json).obj()
+} catch {
+    print(error)
+}
+
+// JJError.WrongType: Can't convert Optional(1) at path: '<root>' to type '[String: AnyObject]'
+```
+
+
 
 ### Author
 
