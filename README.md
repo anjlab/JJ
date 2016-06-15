@@ -5,11 +5,7 @@
 [![License](https://img.shields.io/cocoapods/l/JJ.svg?style=flat)](http://cocoapods.org/pods/JJ)
 [![Platform](https://img.shields.io/cocoapods/p/JJ.svg?style=flat)](http://cocoapods.org/pods/JJ)
 
-## Example
-
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
-
-
+Super simple json parser for Swift
 
 ## Requirements
 
@@ -22,6 +18,20 @@ it, simply add the following line to your Podfile:
 
 ```ruby
 pod "JJ"
+```
+
+## Example
+
+```swift
+import JJ
+
+...
+
+do {
+let obj = try jj(json).obj()
+} catch {
+print(error)
+}
 ```
 
 ## Author
