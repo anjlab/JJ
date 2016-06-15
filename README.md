@@ -7,11 +7,11 @@
 
 Super simple json parser for Swift
 
-## Requirements
+### Requirements
 
 Do depencies. You can copy JJ.swift into your project if you want.
 
-## Installation
+### Installation
 
 JJ is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
@@ -20,7 +20,7 @@ it, simply add the following line to your Podfile:
 pod "JJ"
 ```
 
-## Example
+### Example
 
 ```swift
 struct Repository {
@@ -31,12 +31,12 @@ struct Repository {
     let sometimesMissingKey: String?
 
     let owner: User //Struct conforming NSCoding
-    let defaultBranch: Branch
+    let defaultBranch: Branch // Struct NOT conforming to NSCoding
 
     var fullName: String { return "\(owner.login) \(name)" }
 
-    init(anyObject: AnyObject?) throws -> Repository {
-        let obj = jj(anyObject).obj()
+    init(anyObject: AnyObject?) throws {
+        let obj = try jj(anyObject).obj()
         self.name = obj["name"].toString()
         self.description = obj["description"].toString()
         self.stargazersCount = obj["stargazersCount"].toInt()
@@ -49,10 +49,14 @@ struct Repository {
 }
 ```
 
-## Author
+### Features
+- Informative errors
+- Decoding depends on inferred type
+
+### Author
 
 Yury Korolev, yury.korolev@gmail.com
 
-## License
+### License
 
 JJ is available under the MIT license. See the LICENSE file for more info.
