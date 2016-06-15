@@ -23,14 +23,35 @@ pod "JJ"
 ## Example
 
 ```swift
-import JJ
+struct Repository {
+    let name: String
+    let description: String
+    let stargazersCount: Int
+    let language: String?
+    let sometimesMissingKey: String?
 
-...
+    let owner: User //Struct conforming NSCoding
+    let defaultBranch: Branch
+
+    var fullName: String { return "\(owner.login) \(name)" }
+
+    init(anyObject: AnyObject?) throws -> Repository {
+        let obj = jj(anyObject).obj()
+        self.name = obj["name"].toString()
+        self.description = obj["description"].toString()
+        self.stargazersCount = obj["stargazersCount"].toInt()
+        self.language = obj["language"].asString
+        self.sometimesMissingKey = obj["sometimesMissingKey"].asString
+
+        self.owner = obj["owner"].decode() as User
+        self.defaultBranch = Branch(name: obj["branch"].toString())
+    }
+}
 
 do {
-let obj = try jj(json).obj()
+    let obj = try jj(json).obj()
 } catch {
-print(error)
+    print(error)
 }
 ```
 
