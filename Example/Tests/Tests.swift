@@ -12,6 +12,8 @@ class Tests: XCTestCase {
         
         XCTAssertEqual("[\"firstName\": Yury, \"lastName\": Korolev]", o.raw.debugDescription)
         XCTAssertEqual("{\n  \"firstName\": \"Yury\",\n  \"lastName\": \"Korolev\"\n}", o.debugDescription)
+        XCTAssertEqual("{\n  \"firstName\": \"Yury\",\n  \"lastName\": \"Korolev\"\n}", o.prettyPrint())
+        XCTAssertEqual("{\n  \"firstName\": \"Yury\",\n  \"lastName\": \"Korolev\"\n}", o.prettyPrint(space: "", spacer: "  "))
         
         let json = [
             "firstName": "Yury",
@@ -31,7 +33,9 @@ class Tests: XCTestCase {
         
         XCTAssertEqual("Yury",    try! obj["firstName"].string())
         XCTAssertEqual("Korolev", try! obj["lastName"].string())
+        XCTAssertEqual(nil, try? obj["unknownKey"].string())
         XCTAssertEqual("Korolev", obj["lastName"].toString())
+        XCTAssertEqual("Test", obj["unknownKey"].toString("Test"))
         XCTAssertEqual("Korolev", obj["lastName"].asString)
         XCTAssertEqual(true, try! obj["trueFlag"].bool())
         XCTAssertEqual(false, try! obj["falseFlag"].bool())
@@ -47,27 +51,38 @@ class Tests: XCTestCase {
         XCTAssertEqual(nil, obj["integerValue"].asInt)
         XCTAssertEqual(13, try! obj["intValue"].uInt())
         XCTAssertEqual(13, obj["intValue"].toUInt())
+        XCTAssertEqual(11, obj["unknownKey"].toUInt(UInt(11)))
+        XCTAssertEqual(0, obj["unknownKey"].toUInt())
         XCTAssertEqual(13, obj["intValue"].asUInt)
         XCTAssertEqual(12.1, try! obj["doubleValue"].float())
         XCTAssertEqual(12.1, obj["doubleValue"].toFloat())
+        XCTAssertEqual(11.1, obj["unknownKey"].toFloat(Float(11.1)))
+        XCTAssertEqual(0, obj["unknownKey"].toFloat())
         XCTAssertEqual(12.1, obj["doubleValue"].asFloat)
         XCTAssertEqual(12.1, obj["doubleValue"].toDouble())
         XCTAssertEqual(12.1, obj["doubleValue"].toDouble(11.1))
         XCTAssertEqual(12.1, obj["doubleValue"].asDouble)
-        XCTAssertEqual(nil, obj["floatValue"].asDouble)
-        XCTAssertEqual(11.1, obj["floatValue"].toDouble(11.1))
+        XCTAssertEqual(nil, obj["unknownKey"].asDouble)
+        XCTAssertEqual(11.1, obj["unknownKey"].toDouble(11.1))
         XCTAssertEqual(12.1, try! obj["doubleValue"].number())
         XCTAssertEqual(12.1, obj["doubleValue"].toNumber())
+        XCTAssertEqual(11.1, obj["unknownKey"].toNumber(11.1))
         XCTAssertEqual(12.1, obj["doubleValue"].asNumber)
+        XCTAssertEqual(nil, try? obj["unknownKey"].date())
+        XCTAssertEqual(String.asRFC3339Date("2016-06-10T00:00:00.000Z")(), try! obj["date"].date())
         XCTAssertEqual(String.asRFC3339Date("2016-06-10T00:00:00.000Z")(), obj["date"].asDate)
         XCTAssertEqual("2016-06-10T00:00:00.000Z", String.asRFC3339Date("2016-06-10T00:00:00.000Z")()?.toRFC3339String())
         XCTAssertEqual(NSURL(string: "http://anjlab.com"), try! obj["url"].url())
         XCTAssertEqual(nil, try? obj["unknownKey"].url())
         XCTAssertEqual(NSURL(string: "http://anjlab.com"), obj["url"].toURL())
+        XCTAssertEqual(NSURL(), obj["unknownKey"].toURL(NSURL()))
         XCTAssertEqual(NSURL(string: "http://anjlab.com"), obj["url"].asURL)
-        XCTAssertEqual(NSTimeZone(name: "Europe/Moscow"), obj["zone"].asTimeZone)
         XCTAssertEqual(nil, obj["unknownKey"].asURL)
+        XCTAssertEqual(NSTimeZone(name: "Europe/Moscow"), obj["zone"].asTimeZone)
+        XCTAssertEqual(nil, obj["unknownKey"].asTimeZone)
         XCTAssertEqual(true, obj["obj"].toObj().exists)
+        XCTAssertEqual("[\"value\": 1]", try! obj["obj"].obj().raw.debugDescription)
+        XCTAssertEqual(nil, try? obj["unknownKey"].obj().raw.debugDescription)
         XCTAssertEqual("Optional([\"value\": 1])", obj["obj"].toObj().raw.debugDescription)
         XCTAssertEqual("<root>.obj", obj["obj"].toObj().path)
         XCTAssertEqual(true, obj["arr"].toArr().exists)
@@ -79,10 +94,8 @@ class Tests: XCTestCase {
         XCTAssertEqual("<root>.url", obj["url"].path)
         XCTAssertEqual(json["firstName"].debugDescription, obj["firstName"].raw.debugDescription)
         XCTAssertEqual("\"Yury\"", obj["firstName"].debugDescription)
-    }
-    
-    func testDecEnc() {
-       
+        XCTAssertEqual("\"Yury\"", obj["firstName"].prettyPrint())
+        XCTAssertEqual("\"Yury\"", obj["firstName"].prettyPrint(space: "", spacer: "  "))
     }
     
     func testArray() {
@@ -106,7 +119,71 @@ class Tests: XCTestCase {
         XCTAssertEqual(true, arr.exists)
         XCTAssertEqual(true, arr[1].exists)
         XCTAssertEqual("<root>", arr.path)
+        XCTAssertEqual(JJVal(1, path: "<root>.1").debugDescription, arr.at(0).debugDescription)
         XCTAssertEqual("[\n  1,\n  \"Nice\",\n  5.5,\n  null,\n  \"http://anjlab.com\"\n]", arr.prettyPrint())
+        XCTAssertEqual("[\n  1,\n  \"Nice\",\n  5.5,\n  null,\n  \"http://anjlab.com\"\n]", arr.prettyPrint(space: "", spacer: "  "))
+    }
+    
+    func testDecEnc() {
+        let data = NSMutableData()
+        let coder = NSKeyedArchiver(forWritingWithMutableData: data)
+        
+        let enc = jj(encoder: coder)
+        
+        enc.put("Title", at: "title")
+        enc.put("Nice", at: "text")
+        enc.put(["key" : "value"], at: "obj")
+        enc.put(String.asRFC3339Date("2016-06-10T00:00:00.000Z")(), at: "date")
+        enc.put(false, at: "boolValue")
+        enc.put(13, at: "number")
+        
+        coder.finishEncoding()
+        
+        let decoder = NSKeyedUnarchiver(forReadingWithData: data)
+        
+        let dec = jj(decoder: decoder)
+        
+        XCTAssertEqual("Nice", try! dec["text"].string())
+        XCTAssertEqual(nil, dec["unknownKey"].asString)
+        XCTAssertEqual(13, try! dec["number"].int())
+        XCTAssertEqual(nil, dec["unknownKey"].asInt)
+        XCTAssertEqual(nil, dec["unknownKey"].asDate)
+        XCTAssertEqual(nil, dec["unknownKey"].asURL)
+        XCTAssertEqual(String.asRFC3339Date("2016-06-10T00:00:00.000Z")(), try! dec["date"].date())
+        XCTAssertEqual(String.asRFC3339Date("2016-06-10T00:00:00.000Z")(), dec["date"].asDate)
+        XCTAssertEqual(nil, dec["unknownKey"].asTimeZone)
+        XCTAssertEqual(false, try! dec["boolValue"].bool())
+        XCTAssertEqual(false, dec["boolValue"].toBool())
+        XCTAssertEqual(decoder, dec["boolValue"].decoder)
+        XCTAssertEqual("boolValue", dec["boolValue"].key)
+        XCTAssertEqual("Title", try! dec["title"].decode() as NSString)
+        XCTAssertEqual(["key" : "value"], dec["obj"].decodeAs())
+
+        //Errors
+        
+        do {
+            let _ = try dec["unknownKey"].date()
+            XCTFail()
+        } catch {
+            let err = "\(error)"
+            XCTAssertEqual("JJError.WrongType: Can\'t convert nil at path: \'unknownKey\' to type \'NSDate\'", err)
+        }
+        
+        do {
+            let _ = try dec["unknownKey"].string()
+            XCTFail()
+        } catch {
+            let err = "\(error)"
+            XCTAssertEqual("JJError.WrongType: Can\'t convert nil at path: \'unknownKey\' to type \'String\'", err)
+        }
+        
+        do {
+            let _ = try dec["unknownKey"].decode() as NSNumber
+            XCTFail()
+        } catch {
+            let err = "\(error)"
+            XCTAssertEqual("JJError.WrongType: Can\'t convert nil at path: \'unknownKey\' to type \'T\'", err)
+        }
     }
     
     func testErrors() {
@@ -156,11 +233,51 @@ class Tests: XCTestCase {
         }
         
         do {
-            let _ = try obj["boolValue"].bool()
+            let _ = try obj["unknownKey"].bool()
             XCTFail()
         } catch {
             let err = "\(error)"
-            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '<root>.boolValue' to type 'Bool'", err)
+            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '<root>.unknownKey' to type 'Bool'", err)
+        }
+        
+        do {
+            let _ = try obj["unknownKey"].int()
+            XCTFail()
+        } catch {
+            let err = "\(error)"
+            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '<root>.unknownKey' to type 'Int'", err)
+        }
+        
+        do {
+            let _ = try obj["unknownKey"].uInt()
+            XCTFail()
+        } catch {
+            let err = "\(error)"
+            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '<root>.unknownKey' to type 'UInt'", err)
+        }
+        
+        do {
+            let _ = try obj["unknownKey"].float()
+            XCTFail()
+        } catch {
+            let err = "\(error)"
+            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '<root>.unknownKey' to type 'Float'", err)
+        }
+        
+        do {
+            let _ = try obj["unknownKey"].double()
+            XCTFail()
+        } catch {
+            let err = "\(error)"
+            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '<root>.unknownKey' to type 'Double'", err)
+        }
+        
+        do {
+            let _ = try obj["unknownKey"].number()
+            XCTFail()
+        } catch {
+            let err = "\(error)"
+            XCTAssertEqual("JJError.WrongType: Can't convert nil at path: '<root>.unknownKey' to type 'NSNumber'", err)
         }
     }
     

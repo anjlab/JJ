@@ -524,8 +524,8 @@ public struct JJDecVal {
     }
     
     // extension point
-    var decoder: NSCoder { return _dec }
-    var key: String { return _key }
+    public var decoder: NSCoder { return _dec }
+    public var key: String { return _key }
 }
 
 public struct JJDec {
