@@ -47,12 +47,6 @@ struct Repository {
         self.defaultBranch = Branch(name: obj["branch"].toString())
     }
 }
-
-do {
-    let obj = try jj(json).obj()
-} catch {
-    print(error)
-}
 ```
 
 ## Author
