@@ -23,6 +23,10 @@ pod "JJ"
 ### Example
 
 ```swift
+struct Branch {
+    let branch: String
+}
+
 struct Repository {
     let name: String
     let description: String
@@ -30,10 +34,8 @@ struct Repository {
     let language: String?
     let sometimesMissingKey: String?
 
-    let owner: User //Struct conforming NSCoding
-    let defaultBranch: Branch // Struct NOT conforming to NSCoding
-
-    var fullName: String { return "\(owner.login) \(name)" }
+    let owner: NSData
+    let defaultBranch: Branch
 
     init(anyObject: AnyObject?) throws {
         let obj = try jj(anyObject).obj()
@@ -43,10 +45,29 @@ struct Repository {
         self.language = obj["language"].asString
         self.sometimesMissingKey = obj["sometimesMissingKey"].asString
 
-        self.owner = obj["owner"].decode() as User
-        self.defaultBranch = Branch(name: obj["branch"].toString())
+        let user = try obj["owner"].obj()
+        let name = try user.at("name").string()
+        let headquarters = try user.at("headquarters").string()
+
+        let data = NSMutableData()
+        let coder = NSKeyedArchiver(forWritingWithMutableData: data)
+        let enc = jj(encoder: coder)
+        enc.put(name, at: "name")
+        enc.put(headquarters, at: "headquarters")
+        coder.finishEncoding()
+
+        self.owner = data
+        self.defaultBranch = Branch(branch: obj["branch"].toString())
+    }
+
+    func printFullName() {
+        let decoder = NSKeyedUnarchiver(forReadingWithData: owner)
+        let dec = jj(decoder: decoder)
+        let ownerName = dec["name"].asString
+        print("\(ownerName)/\(name)")
     }
 }
+
 
 let json = [
         "name" : "JJ",
@@ -62,7 +83,8 @@ let json = [
 ]
 
 do {
-    let repository = try Repostory(anyObject: json)
+    let repository = try Repository(anyObject: json)
+    repository.printFullName()
 } catch {
     debugPrint(error)
 }
