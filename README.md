@@ -61,7 +61,7 @@ struct Repository {
     }
 
     func printFullName() {
-        let decoder = NSKeyedUnarchiver(forReadingWithData: owner)
+        let decoder = NSKeyedUnarchiver(forReadingWithData: self.owner)
         let dec = jj(decoder: decoder)
         let ownerName = dec["name"].asString
         print("\(ownerName)/\(name)")
@@ -96,7 +96,7 @@ do {
 - Leverages Swift 2's error handling
 - Support classes conforming ```NSCoding```
 
-### Parsing Formats
+### Parsing Types
 - `Bool`
 - `Int` & `UInt`
 - `Float`
@@ -130,6 +130,11 @@ do {
 ```
 
 ### Handling Errors
+Expressions like `.<Type>()` will throw directly, and catch-statements can be used to create the most complex error handling behaviours. This also means that `try?` can be used to return nil if anything goes wrong instead of throwing.
+
+For required values is most useful methods `.to<Type>(defaultValue)`. If the value is missing or does not match its type, will be used the default value.
+
+For optional values there's methods `.as<Type>`.
 
 | Method | Examples | Null Behaviour | Missing Key Behaviour | Type Mismatch Behaviour |
 | --- | :---: | :---: | :---: | :---: |
