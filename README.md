@@ -24,47 +24,47 @@ pod "JJ"
 
 ```swift
 struct Repository {
-let name: String
-let description: String
-let stargazersCount: Int
-let language: String?
-let sometimesMissingKey: String?
+    let name: String
+    let description: String
+    let stargazersCount: Int
+    let language: String?
+    let sometimesMissingKey: String?
 
-let owner: User //Struct conforming NSCoding
-let defaultBranch: Branch // Struct NOT conforming to NSCoding
+    let owner: User //Struct conforming NSCoding
+    let defaultBranch: Branch // Struct NOT conforming to NSCoding
 
-var fullName: String { return "\(owner.login) \(name)" }
+    var fullName: String { return "\(owner.login) \(name)" }
 
-init(anyObject: AnyObject?) throws {
-let obj = try jj(anyObject).obj()
-self.name = obj["name"].toString()
-self.description = obj["description"].toString()
-self.stargazersCount = obj["stargazersCount"].toInt()
-self.language = obj["language"].asString
-self.sometimesMissingKey = obj["sometimesMissingKey"].asString
+    init(anyObject: AnyObject?) throws {
+        let obj = try jj(anyObject).obj()
+        self.name = obj["name"].toString()
+        self.description = obj["description"].toString()
+        self.stargazersCount = obj["stargazersCount"].toInt()
+        self.language = obj["language"].asString
+        self.sometimesMissingKey = obj["sometimesMissingKey"].asString
 
-self.owner = obj["owner"].decode() as User
-self.defaultBranch = Branch(name: obj["branch"].toString())
-}
+        self.owner = obj["owner"].decode() as User
+        self.defaultBranch = Branch(name: obj["branch"].toString())
+        }
 }
 
 let json = [
-"name" : "JJ",
-"description" : "Super simple json parser for Swift",
-"stargazersCount" : 999999,
-"language" : "RU",
-"sometimesMissingKey" : NSNull(),
-"owner" : [
-"name" : "Yury",
-"headquarters" : "AnjLab" 
-],
-"branch" : "master"
+        "name" : "JJ",
+        "description" : "Super simple json parser for Swift",
+        "stargazersCount" : 999999,
+        "language" : "RU",
+        "sometimesMissingKey" : NSNull(),
+        "owner" : [
+            "name" : "Yury",
+            "headquarters" : "AnjLab" 
+        ],
+        "branch" : "master"
 ]
 
 do {
-let repository = try Repostory(anyObject: json)
+    let repository = try Repostory(anyObject: json)
 } catch {
-debugPrint(error)
+    debugPrint(error)
 }
 ```
 
@@ -96,9 +96,9 @@ debugPrint(error)
 let json = ["element"]
 
 do {
-let _ = try jj(json).obj()
+    let _ = try jj(json).obj()
 } catch {
-print(error)
+    print(error)
 }
 
 //  JJError.WrongType: Can't convert Optional(<_TtCs21_SwiftDeferredNSArray 0x7fa3be4acb40>(
