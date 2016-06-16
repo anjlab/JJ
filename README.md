@@ -45,7 +45,7 @@ struct Repository {
 
         self.owner = obj["owner"].decode() as User
         self.defaultBranch = Branch(name: obj["branch"].toString())
-        }
+    }
 }
 
 let json = [
@@ -114,8 +114,8 @@ do {
 | `.<Type>()` | `.int()` | `throws` | `throws` | `throws` |
 | `.to<Type>(defaultValue)` | `.toString()` or `.toString("Default")` | `defaultValue` | `defaultValue` | `defaultValue` |
 | `.as<Type>` | `.asObj` | `nil` | `nil` | `nil` |
-| `.decode()` | `.decode() as NSNumber` | `nil` | `nil` | `nil` |
-| `.decodeAs()` | `.decodeAs()` | ```nil``` | `nil` | `nil` |
+| `.decode()` | `.decode() as NSNumber` | `throws` | `throws` | `throws` |
+| `.decodeAs()` | `.decodeAs()` | `nil` | `nil` | `nil` |
 
 
 ### Requirements
