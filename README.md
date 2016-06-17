@@ -114,9 +114,10 @@ let decoder = NSKeyedUnarchiver(forReadingWith: data as Data)
 let author = RepositoryAuthor(coder: decoder)
 ```
 ### Features
+- No protocols
 - Informative errors
-- Decoding depends on inferred type
-- Leverages Swift 3's error handling
+- Extensible
+- Leverages Swift 2's error handling
 - Support classes conforming ```NSCoding```
 
 ### Parsing Types
