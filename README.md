@@ -149,6 +149,14 @@ For required values is most useful methods ```.to<Type>(defaultValue)```. If the
 
 For optional values there's methods ```.as<Type>```.
 
+| Method | Examples | Null Behaviour | Missing Key Behaviour | Type Mismatch Behaviour |
+| --- | :---: | :---: | :---: | :---: |
+| `.<Type>()` | `.int()` | `throws` | `throws` | `throws` |
+| `.to<Type>(defaultValue)` | `.toString()` or `.toString("Default")` | `defaultValue` | `defaultValue` | `defaultValue` |
+| `.as<Type>` | `.asObj` | `nil` | `nil` | `nil` |
+| `.decode()` | `.decode() as NSNumber` | `throws` | `throws` | `throws` |
+| `.decodeAs()` | `.decodeAs()` | `nil` | `nil` | `nil` |
+
 ### Requirements
 - iOS 8.0+ / Mac OS X 10.10+ / tvOS 9.0+ / watchOS 2.0+
 - Xcode 7.3
