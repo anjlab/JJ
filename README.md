@@ -133,15 +133,15 @@ let author = RepositoryAuthor(coder: decoder)
 ```JJError``` conforming ```ErrorProtocol``` and there are currently two error-structs conforming to it
 - ```WrongType``` throws when it is impossible to convert the element
 - ```NotFound``` throws if the element is missing
-*/
+```swift
 let arr = ["element"]
 
 do {
-let _ = try jj(arr).obj()
+    let _ = try jj(arr).obj()
 } catch {
-print(error)
+    print(error)
 }
-/*:
+```
 ### Handling Errors
 Expressions like ```.<Type>()``` will throw directly, and catch-statements can be used to create the most complex error handling behaviours. This also means that ```try?``` can be used to return nil if anything goes wrong instead of throwing.
 
@@ -154,7 +154,7 @@ For optional values there's methods ```.as<Type>```.
 | `.<Type>()` | `.int()` | `throws` | `throws` | `throws` |
 | `.to<Type>(defaultValue)` | `.toString()` or `.toString("Default")` | `defaultValue` | `defaultValue` | `defaultValue` |
 | `.as<Type>` | `.asObj` | `nil` | `nil` | `nil` |
-| `.decode()` | `.decode() as NSNumber` | `throws` | `throws` | `throws` |
+| `.decode()` | `.decode() as Number` | `throws` | `throws` | `throws` |
 | `.decodeAs()` | `.decodeAs()` | `nil` | `nil` | `nil` |
 
 ### Requirements
