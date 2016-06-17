@@ -8,8 +8,11 @@
 Super simple json parser for Swift
 
 ### Requirements
+- iOS 10.0+ / Mac OS X 10.12+ / tvOS 10.0+ / watchOS 3.0+
+- Xcode 8.0
+- Swift 3.0
 
-Do depencies. You can copy JJ.swift into your project if you want.
+No dependences. You can copy JJ.swift into your project if you want.
 
 ### Installation
 
@@ -161,11 +164,6 @@ For optional values there's methods ```.as<Type>```.
 | `.as<Type>` | `.asObj` | `nil` | `nil` | `nil` |
 | `.decode()` | `.decode() as Number` | `throws` | `throws` | `throws` |
 | `.decodeAs()` | `.decodeAs()` | `nil` | `nil` | `nil` |
-
-### Requirements
-- iOS 10.0+ / Mac OS X 10.12+ / tvOS 10.0+ / watchOS 3.0+
-- Xcode 8.0
-- Swift 3.0
 
 ### Author
 
