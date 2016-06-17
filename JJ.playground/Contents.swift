@@ -123,16 +123,16 @@ let author = RepositoryAuthor(coder: decoder)
  - `Int` & `UInt`
  - `Float`
  - `Double`
- - `NSNumber`
+ - `Number`
  - `String`
- - `NSDate`
- - `NSURL`
- - `NSTimeZone`
+ - `Date`
+ - `URL`
+ - `TimeZone`
  - [`AnyObject`]
  - [`String` : `AnyObject`]
  
  ### Errors
- `JJError` conforming `ErrorType` and there are currently two error-structs conforming to it
+ `JJError` conforming `ErrorProtocol` and there are currently two error-structs conforming to it
  - `WrongType` throws when it is impossible to convert the element
  - `NotFound` throws if the element is missing
  */
