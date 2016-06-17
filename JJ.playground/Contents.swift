@@ -4,8 +4,11 @@
  Super simple json parser for Swift
  
  ### Requirements
+ - iOS 10.0+ / Mac OS X 10.12+ / tvOS 10.0+ / watchOS 3.0+
+ - Xcode 8.0
+ - Swift 3.0
  
- Do depencies. You can copy JJ.swift into your project if you want.
+ No dependences. You can copy ```JJ.swift``` into your project if you want.
  
  ### Installation
  
@@ -147,11 +150,6 @@ do {
  For required values is most useful methods `.to<Type>(defaultValue)`. If the value is missing or does not match its type, will be used the default value.
  
  For optional values there's methods `.as<Type>`.
- 
- ### Requirements
- - iOS 8.0+ / Mac OS X 10.10+ / tvOS 9.0+ / watchOS 2.0+
- - Xcode 7.3
- - Swift 2.2
  
  ### Author
  
