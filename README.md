@@ -163,9 +163,9 @@ For optional values there's methods ```.as<Type>```.
 | `.decodeAs()` | `.decodeAs()` | `nil` | `nil` | `nil` |
 
 ### Requirements
-- iOS 8.0+ / Mac OS X 10.10+ / tvOS 9.0+ / watchOS 2.0+
-- Xcode 7.3
-- Swift 2.2
+- iOS 10.0+ / Mac OS X 10.12+ / tvOS 10.0+ / watchOS 3.0+
+- Xcode 8.0
+- Swift 3.0
 
 ### Author
 
