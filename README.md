@@ -91,8 +91,9 @@ do {
 ```
 
 ### Features
+- No protocols
 - Informative errors
-- Decoding depends on inferred type
+- Extensible
 - Leverages Swift 2's error handling
 - Support classes conforming ```NSCoding```
 
