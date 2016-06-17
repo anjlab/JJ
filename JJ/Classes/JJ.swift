@@ -192,7 +192,7 @@ public struct JJMaybeObj {
     public var exists: Bool { return _v != nil }
 }
 
-public struct JJVal: CustomDebugStringConvertible {
+public struct JJVal: CustomDebugStringConvertible, CustomPlaygroundQuickLookable {
     private let _path: String
     private let _v: AnyObject?
 

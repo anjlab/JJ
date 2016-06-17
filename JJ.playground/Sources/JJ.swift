@@ -6,7 +6,7 @@
 //
 //
 
-import Foundation
+import UIKit
 
 private let _rfc3339DateFormatter: DateFormatter = _buildRfc3339DateFormatter()
 
@@ -50,7 +50,7 @@ public func jj(decoder: NSCoder) -> JJDec { return JJDec(decoder) }
 
 public func jj(encoder: NSCoder) -> JJEnc { return JJEnc(encoder) }
 
-public struct JJArr: CustomDebugStringConvertible {
+public struct JJArr: CustomDebugStringConvertible, CustomPlaygroundQuickLookable {
     private let _path: String
     private let _v: [AnyObject]
 
@@ -96,6 +96,21 @@ public struct JJArr: CustomDebugStringConvertible {
     }
 
     public var debugDescription: String { return prettyPrint() }
+    
+    //Playground Look
+    
+    private var descriptionTextView: UITextView {
+        let textView = UITextView()
+        textView.font = UIFont.systemFont(ofSize: 10)
+        textView.text = prettyPrint()
+        textView.sizeToFit()
+        textView.isScrollEnabled = true
+        return textView
+    }
+    
+    public var customPlaygroundQuickLook: PlaygroundQuickLook {
+        return .view(descriptionTextView)
+    }
 }
 
 public struct JJMaybeArr {
@@ -121,7 +136,7 @@ public struct JJMaybeArr {
 
 }
 
-public struct JJObj: CustomDebugStringConvertible {
+public struct JJObj: CustomDebugStringConvertible, CustomPlaygroundQuickLookable {
     private let _path: String
     private let _v: [String: AnyObject]
 
@@ -165,6 +180,21 @@ public struct JJObj: CustomDebugStringConvertible {
     }
 
     public var debugDescription: String { return prettyPrint() }
+    
+    //Playground Look
+    
+    private var descriptionTextView: UITextView {
+        let textView = UITextView()
+        textView.font = UIFont.systemFont(ofSize: 10)
+        textView.text = prettyPrint()
+        textView.sizeToFit()
+        textView.isScrollEnabled = true
+        return textView
+    }
+    
+    public var customPlaygroundQuickLook: PlaygroundQuickLook {
+        return .view(descriptionTextView)
+    }
 }
 
 public struct JJMaybeObj {
@@ -192,7 +222,7 @@ public struct JJMaybeObj {
     public var exists: Bool { return _v != nil }
 }
 
-public struct JJVal: CustomDebugStringConvertible {
+public struct JJVal: CustomDebugStringConvertible, CustomPlaygroundQuickLookable {
     private let _path: String
     private let _v: AnyObject?
 
@@ -446,8 +476,21 @@ public struct JJVal: CustomDebugStringConvertible {
 
     // MARK: CustomDebugStringConvertible
 
-    public var debugDescription: String {
-        return prettyPrint()
+    public var debugDescription: String { return prettyPrint() }
+    
+    //Playground Look
+    
+    private var descriptionTextView: UITextView {
+        let textView = UITextView()
+        textView.font = UIFont.systemFont(ofSize: 10)
+        textView.text = prettyPrint()
+        textView.sizeToFit()
+        textView.isScrollEnabled = true
+        return textView
+    }
+    
+    public var customPlaygroundQuickLook: PlaygroundQuickLook {
+        return .view(descriptionTextView)
     }
 }
 
