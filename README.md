@@ -141,6 +141,11 @@ do {
 } catch {
     print(error)
 }
+
+//  JJError.WrongType: Can't convert Optional(<_TtCs21_SwiftDeferredNSArray 0x7fa3be4acb40>(
+//  element
+//  )
+//  ) at path: '<root>' to type '[String: AnyObject]'
 ```
 ### Handling Errors
 Expressions like ```.<Type>()``` will throw directly, and catch-statements can be used to create the most complex error handling behaviours. This also means that ```try?``` can be used to return nil if anything goes wrong instead of throwing.
