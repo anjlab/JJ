@@ -6,7 +6,7 @@
 //
 //
 
-import Foundation
+import UIKit
 
 private let _rfc3339DateFormatter: NSDateFormatter = _buildRfc3339DateFormatter()
 /** - Returns: **RFC 3339** date formatter */
@@ -138,8 +138,17 @@ public struct JJArr: CustomDebugStringConvertible, CustomPlaygroundQuickLookable
     
     //Playground Look
     
+    private var descriptionTextView: UITextView {
+        let textView = UITextView()
+        textView.font = UIFont.systemFontOfSize(16)
+        textView.text = prettyPrint()
+        textView.sizeToFit()
+        textView.scrollEnabled = true
+        return textView
+    }
+    
     public func customPlaygroundQuickLook() -> PlaygroundQuickLook {
-        return .Text(prettyPrint())
+        return .View(descriptionTextView)
     }
 }
 
@@ -213,11 +222,17 @@ public struct JJObj: CustomDebugStringConvertible, CustomPlaygroundQuickLookable
     
     //Playground Look
     
+    private var descriptionTextView: UITextView {
+        let textView = UITextView()
+        textView.font = UIFont.systemFontOfSize(16)
+        textView.text = prettyPrint()
+        textView.sizeToFit()
+        textView.scrollEnabled = true
+        return textView
+    }
+    
     public func customPlaygroundQuickLook() -> PlaygroundQuickLook {
-        let label = UILabel()
-        label.textAlignment = .Left
-        label.text = prettyPrint()
-        return .View(label)
+        return .View(descriptionTextView)
     }
 }
 
@@ -504,8 +519,17 @@ public struct JJVal: CustomDebugStringConvertible, CustomPlaygroundQuickLookable
     
     //Playground Look
     
+    private var descriptionTextView: UITextView {
+        let textView = UITextView()
+        textView.font = UIFont.systemFontOfSize(16)
+        textView.text = prettyPrint()
+        textView.sizeToFit()
+        textView.scrollEnabled = true
+        return textView
+    }
+    
     public func customPlaygroundQuickLook() -> PlaygroundQuickLook {
-        return .Text(prettyPrint())
+        return .View(descriptionTextView)
     }
 }
 
