@@ -6,10 +6,10 @@
 //
 //
 
-import Foundation
+import UIKit
 
 private let _rfc3339DateFormatter: DateFormatter = _buildRfc3339DateFormatter()
-/** - Returns: **RFC 3339** date formatter */
+
 private func _buildRfc3339DateFormatter() -> DateFormatter {
     let formatter = DateFormatter()
     formatter.locale = Locale(localeIdentifier: "en_US")
@@ -19,29 +19,19 @@ private func _buildRfc3339DateFormatter() -> DateFormatter {
 }
 
 public extension String {
-    /**
-     Returns a date representation of a given **RFC 3339** string. If dateFromString: can not parse the string, returns `nil`.
-     - Returns: A date representation of string.
-     */
     func asRFC3339Date() -> Date? {
         return _rfc3339DateFormatter.date(from: self)
     }
 }
 
 public extension Date {
-    /**
-     Returns a **RFC 3339** string representation of a given date formatted.
-     - Returns: A **RFC 3339** string representation.
-     */
     func toRFC3339String() -> String {
         return _rfc3339DateFormatter.string(from: self)
     }
 }
 
 public enum JJError: ErrorProtocol, CustomStringConvertible {
-    /** Throws on can't convert value on path */
     case wrongType(v: AnyObject?, path: String, toType: String)
-    /** Throws on can't find object on path */
     case notFound(path: String)
 
     public var description: String {
@@ -53,46 +43,26 @@ public enum JJError: ErrorProtocol, CustomStringConvertible {
         }
     }
 }
-/**
- - Parameter v: `AnyObject` to parse
- - Returns: `JJVal`
- */
+
 public func jj(_ v: AnyObject?) -> JJVal { return JJVal(v) }
-/**
- - Parameter decoder: `NSCoder` to decode
- - Returns: `JJDec`
- */
+
 public func jj(decoder: NSCoder) -> JJDec { return JJDec(decoder) }
-/**
- - Parameter encoder: `NSCoder` to encode
- - Returns: `JJEnc`
- */
+
 public func jj(encoder: NSCoder) -> JJEnc { return JJEnc(encoder) }
-/**
- Struct for store parsing `Array` of `AnyObject`
- */
-public struct JJArr: CustomDebugStringConvertible {
+
+public struct JJArr: CustomDebugStringConvertible, CustomPlaygroundQuickLookable {
     private let _path: String
     private let _v: [AnyObject]
-    /**
-     Init `JJArr`
-     - Parameters:
-        - v: Array of AnyObject
-        - path: path in original object
-     - Returns: `JJArr`
-     */
+
     public init(_ v: [AnyObject], path: String) {
         _v = v
         _path = path
     }
-    /** See at(_:) */
+
     public subscript (index: Int) -> JJVal {
         return at(index)
     }
-    /**
-     - Parameter index: Index of element
-     - Returns: `JJVal` or `JJVal(nil, path: newPath)` if `index` is out of `Array`
-     */
+
     public func at(_ index: Int) -> JJVal {
         let newPath = _path + "[\(index)]"
 
@@ -103,22 +73,14 @@ public struct JJArr: CustomDebugStringConvertible {
     }
 
     // MARK: extension point
-    /** Array of `AnyObject` */
     public var raw: [AnyObject] { return _v }
-    /** Path in original object */
     public var path: String { return _path }
 
     // MARK: Shortcusts
-    /** `True` if object exist */
+
     public var exists: Bool { return true }
-    /** The number of elements the Array stores */
     public var count:Int { return _v.count }
-    /**
-     - Parameters:
-     - space: space between parent elements of Array
-     - spacer: space to embedded values
-     - Returns: A textual representation of Array
-     */
+
     public func prettyPrint(space: String = "", spacer: String = "  ") -> String {
         if _v.count == 0 {
             return "[]"
@@ -132,8 +94,23 @@ public struct JJArr: CustomDebugStringConvertible {
         
         return str + "\(space)]"
     }
-    /** See prettyPrint() */
+
     public var debugDescription: String { return prettyPrint() }
+    
+    //Playground Look
+    
+    private var descriptionTextView: UITextView {
+        let textView = UITextView()
+        textView.font = UIFont.systemFont(ofSize: 10)
+        textView.text = prettyPrint()
+        textView.sizeToFit()
+        textView.isScrollEnabled = true
+        return textView
+    }
+    
+    public var customPlaygroundQuickLook: PlaygroundQuickLook {
+        return .view(descriptionTextView)
+    }
 }
 
 public struct JJMaybeArr {
@@ -158,27 +135,16 @@ public struct JJMaybeArr {
     public var path: String { return _path }
 
 }
-/**
- Struct for store parsing `Dictionary`
- */
-public struct JJObj: CustomDebugStringConvertible {
+
+public struct JJObj: CustomDebugStringConvertible, CustomPlaygroundQuickLookable {
     private let _path: String
     private let _v: [String: AnyObject]
-    /**
-     Init `JJObj`
-     - Parameters:
-        - v: `Dictionary` [`String` : `AnyObject`]
-        - path: path in original object
-     - Returns: `JJArr`
-     */
+
     public init(_ v: [String: AnyObject], path: String) {
         _v = v
         _path = path
     }
-    /**
-     - Parameter key: Key of element of Dictionary
-     - Returns: `JJVal`
-     */
+
     public func at(_ key: String) -> JJVal {
         let newPath = _path + ".\(key)"
         #if DEBUG
@@ -188,7 +154,7 @@ public struct JJObj: CustomDebugStringConvertible {
         #endif
         return JJVal(_v[key], path: newPath)
     }
-    
+
     public subscript (key: String) -> JJVal { return at(key) }
 
     // MARK: extension point
@@ -214,6 +180,21 @@ public struct JJObj: CustomDebugStringConvertible {
     }
 
     public var debugDescription: String { return prettyPrint() }
+    
+    //Playground Look
+    
+    private var descriptionTextView: UITextView {
+        let textView = UITextView()
+        textView.font = UIFont.systemFont(ofSize: 10)
+        textView.text = prettyPrint()
+        textView.sizeToFit()
+        textView.isScrollEnabled = true
+        return textView
+    }
+    
+    public var customPlaygroundQuickLook: PlaygroundQuickLook {
+        return .view(descriptionTextView)
+    }
 }
 
 public struct JJMaybeObj {
@@ -241,7 +222,7 @@ public struct JJMaybeObj {
     public var exists: Bool { return _v != nil }
 }
 
-public struct JJVal: CustomDebugStringConvertible {
+public struct JJVal: CustomDebugStringConvertible, CustomPlaygroundQuickLookable {
     private let _path: String
     private let _v: AnyObject?
 
@@ -495,8 +476,21 @@ public struct JJVal: CustomDebugStringConvertible {
 
     // MARK: CustomDebugStringConvertible
 
-    public var debugDescription: String {
-        return prettyPrint()
+    public var debugDescription: String { return prettyPrint() }
+    
+    //Playground Look
+    
+    private var descriptionTextView: UITextView {
+        let textView = UITextView()
+        textView.font = UIFont.systemFont(ofSize: 10)
+        textView.text = prettyPrint()
+        textView.sizeToFit()
+        textView.isScrollEnabled = true
+        return textView
+    }
+    
+    public var customPlaygroundQuickLook: PlaygroundQuickLook {
+        return .view(descriptionTextView)
     }
 }
 
