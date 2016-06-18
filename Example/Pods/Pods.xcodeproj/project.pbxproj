@@ -325,17 +325,19 @@
 						DevelopmentTeam = FD6ZML48V9;
 						DevelopmentTeamName = "OOO Transpribor";
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 					};
 					379FDBEB74F42F36EC207ED5E868FFEE = {
 						DevelopmentTeam = FD6ZML48V9;
 						DevelopmentTeamName = "OOO Transpribor";
 						LastSwiftMigration = 0800;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					DD3CF10308B4A9A3BC5914E5F9B30507 = {
 						DevelopmentTeam = FD6ZML48V9;
 						DevelopmentTeamName = "OOO Transpribor";
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
