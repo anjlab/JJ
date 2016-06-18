@@ -85,7 +85,10 @@ public struct JJArr: CustomDebugStringConvertible {
         _v = v
         _path = path
     }
-    /** See at(_:) */
+    /**
+     - Parameter index: Index of element
+     - Returns: `JJVal` or `JJVal(nil, path: newPath)` if `index` is out of `Array`
+     */
     public subscript (index: Int) -> JJVal {
         return at(index)
     }
@@ -103,7 +106,7 @@ public struct JJArr: CustomDebugStringConvertible {
     }
 
     // MARK: extension point
-    /** Array of `AnyObject` */
+    /** Raw value of `Array` of `AnyObject` */
     public var raw: [AnyObject] { return _v }
     /** Path in original object */
     public var path: String { return _path }
@@ -111,13 +114,13 @@ public struct JJArr: CustomDebugStringConvertible {
     // MARK: Shortcusts
     /** `True` if object exist */
     public var exists: Bool { return true }
-    /** The number of elements the Array stores */
+    /** The number of elements the `Array` stores */
     public var count:Int { return _v.count }
     /**
      - Parameters:
-     - space: space between parent elements of Array
+     - space: space between parent elements of `Array`
      - spacer: space to embedded values
-     - Returns: A textual representation of Array
+     - Returns: A textual representation of `Array`
      */
     public func prettyPrint(space: String = "", spacer: String = "  ") -> String {
         if _v.count == 0 {
@@ -132,10 +135,12 @@ public struct JJArr: CustomDebugStringConvertible {
         
         return str + "\(space)]"
     }
-    /** See prettyPrint() */
+    /** A Textual representation of stored `Array` */
     public var debugDescription: String { return prettyPrint() }
 }
-
+/** 
+ Struct like `JJArr` but raw value is optional 
+ */
 public struct JJMaybeArr {
     private let _path: String
     private let _v: JJArr?
@@ -176,7 +181,7 @@ public struct JJObj: CustomDebugStringConvertible {
         _path = path
     }
     /**
-     - Parameter key: Key of element of Dictionary
+     - Parameter key: Key of element of `Dictionary`
      - Returns: `JJVal`
      */
     public func at(_ key: String) -> JJVal {
@@ -188,18 +193,29 @@ public struct JJObj: CustomDebugStringConvertible {
         #endif
         return JJVal(_v[key], path: newPath)
     }
-    
+    /**
+     - Parameter key: Key of element of `Dictionary`
+     - Returns: `JJVal`
+     */
     public subscript (key: String) -> JJVal { return at(key) }
 
     // MARK: extension point
+    /** Raw value of [`String` : `AnyObject`] */
     public var raw: [String: AnyObject] { return _v }
+    /** Path in original object */
     public var path: String { return _path }
 
     // Shortcusts
-
+    /** `True` if object exist */
     public var exists: Bool { return true }
+    /** The number of elements the `Dictionary` stores */
     public var count:Int { return _v.count }
-
+    /**
+     - Parameters:
+     - space: space between parent elements of `Dictionary`
+     - spacer: space to embedded values
+     - Returns: A textual representation of [Dictionary]()
+     */
     public func prettyPrint(space: String = "", spacer: String = "  ") -> String {
         if _v.count == 0 {
             return "{}"
@@ -212,10 +228,12 @@ public struct JJObj: CustomDebugStringConvertible {
         str.remove(at: str.index(str.endIndex, offsetBy: -2))
         return str + "\(space)}"
     }
-
+    /** A Textual representation of stored `Dictionary` */
     public var debugDescription: String { return prettyPrint() }
 }
-
+/**
+ Struct like `JJObj` but raw value is optional
+ */
 public struct JJMaybeObj {
     private let _path: String
     private let _v: JJObj?
