@@ -4,6 +4,7 @@
 [![Version](https://img.shields.io/cocoapods/v/JJ.svg?style=flat)](http://cocoapods.org/pods/JJ)
 [![License](https://img.shields.io/cocoapods/l/JJ.svg?style=flat)](http://cocoapods.org/pods/JJ)
 [![Platform](https://img.shields.io/cocoapods/p/JJ.svg?style=flat)](http://cocoapods.org/pods/JJ)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 Super simple json parser for Swift
 
@@ -16,14 +17,21 @@ No dependences. You can copy JJ.swift into your project if you want.
 
 ### Installation
 
+#### CocoaPods
+
 JJ is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
 pod "JJ"
 ```
+#### Carthage
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+To integrate JJ into your Xcode project using Carthage, specify it in your Cartfile:
+
+```github "anjlab/JJ"```
+
+Run carthage update to build the framework and drag the built JJ.framework into your Xcode project.
 
 ### JSON Example
 ```swift
