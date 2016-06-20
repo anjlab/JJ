@@ -766,8 +766,8 @@ public struct JJDecVal {
      */
     public var asTimeZone: TimeZone? { return _dec.decodeObject(forKey: _key) as? TimeZone }
     /**
-     - Returns: `String` value of encoded value
-     - Throws: `JJError.wrongType` if the encoded value can't decoded to `String`
+     - Returns: `Bool` value of encoded value
+     - Throws: `JJError.wrongType` if the encoded value can't decoded to `Bool`
      */
     public func bool() throws -> Bool { return _dec.decodeBool(forKey: _key) }
     /**
@@ -807,7 +807,9 @@ public struct JJDecVal {
     }
     
     // extension point
+    /** `NSCoder` */
     public var decoder: NSCoder { return _dec }
+    /** Key of encoded value */
     public var key: String { return _key }
 }
 /** Struct to decode `NSCoder` values */
