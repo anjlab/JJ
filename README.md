@@ -16,12 +16,21 @@ No dependences. You can copy ```JJ.swift``` into your project if you want.
 
 ### Installation
 
+#### CocoaPods
+
 JJ is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
 pod "JJ"
 ```
+#### Carthage
+
+To integrate JJ into your Xcode project using Carthage, specify it in your Cartfile:
+
+```github "anjlab/JJ"```
+
+Run carthage update to build the framework and drag the built JJ.framework into your Xcode project.
 
 ### JSON Example
 ```swift
