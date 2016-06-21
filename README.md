@@ -52,13 +52,13 @@ struct MyRepository {
 
     init(anyObject: AnyObject?) throws {
         let obj = try jj(anyObject).obj()
-        self.name = obj["name"].toString()
-        self.desc = obj["description"].toString()
-        self.stargazersCount = obj["stargazersCount"].toInt()
+        self.name = try obj["name"].string()
+        self.desc = try obj["description"].string()
+        self.stargazersCount = try obj["stargazersCount"].int()
         self.language = obj["language"].asString
         self.sometimesMissingKey = obj["sometimesMissingKey"].asString
 
-        self.defaultBranch = Branch(branch: obj["branch"].toString())
+        self.defaultBranch = Branch(branch: obj["branch"].toString("master"))
     }
 }
 
