@@ -4,15 +4,28 @@
  Super simple json parser for Swift
  
  ### Requirements
+ - iOS 10.0+ / Mac OS X 10.12+ / tvOS 10.0+ / watchOS 3.0+
+ - Xcode 8.0
+ - Swift 3.0
  
- Do depencies. You can copy JJ.swift into your project if you want.
+ No dependences. You can copy ```JJ.swift``` into your project if you want.
  
  ### Installation
+ 
+ #### CocoaPods
  
  JJ is available through [CocoaPods](http://cocoapods.org). To install
  it, simply add the following line to your Podfile:
  
  ```pod "JJ"```
+ 
+ #### Carthage
+ 
+ To integrate JJ into your Xcode project using Carthage, specify it in your Cartfile:
+ 
+ ```github "anjlab/JJ"```
+ 
+ Run carthage update to build the framework and drag the built `JJ.framework` into your Xcode project.
  
  ### JSON Example
  */
@@ -110,9 +123,10 @@ let author = RepositoryAuthor(coder: decoder)
 /*:
  
  ### Features
+ - No protocols
  - Informative errors
- - Decoding depends on inferred type
- - Leverages Swift 3's error handling
+ - Extensible
+ - Leverages Swift 2's error handling
  - Support classes conforming ```NSCoding```
  
  ### Parsing Types
@@ -120,16 +134,16 @@ let author = RepositoryAuthor(coder: decoder)
  - `Int` & `UInt`
  - `Float`
  - `Double`
- - `NSNumber`
+ - `Number`
  - `String`
- - `NSDate`
- - `NSURL`
- - `NSTimeZone`
+ - `Date`
+ - `URL`
+ - `TimeZone`
  - [`AnyObject`]
  - [`String` : `AnyObject`]
  
  ### Errors
- `JJError` conforming `ErrorType` and there are currently two error-structs conforming to it
+ `JJError` conforming `ErrorProtocol` and there are currently two error-structs conforming to it
  - `WrongType` throws when it is impossible to convert the element
  - `NotFound` throws if the element is missing
  */
@@ -148,11 +162,6 @@ do {
  
  For optional values there's methods `.as<Type>`.
  
- ### Requirements
- - iOS 8.0+ / Mac OS X 10.10+ / tvOS 9.0+ / watchOS 2.0+
- - Xcode 7.3
- - Swift 2.2
- 
  ### Author
  
  Yury Korolev, yury.korolev@gmail.com
@@ -161,4 +170,3 @@ do {
  
  JJ is available under the MIT license. See the LICENSE file for more info.
  */
-
