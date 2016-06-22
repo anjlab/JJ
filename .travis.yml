@@ -4,6 +4,7 @@
 language: objective-c
 
 osx_image: xcode8
+xcode_sdk: iphonesimulator10.0
 # cache: cocoapods
 # podfile: Example/Podfile
 # before_install:
