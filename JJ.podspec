@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'JJ'
-  s.version          = '0.6.0'
+  s.version          = '0.7.0'
   s.summary          = 'Super simple json parsing and NSCoder encoding and decoding.'
 
   s.description      = <<-DESC
