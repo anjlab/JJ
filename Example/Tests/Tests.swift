@@ -136,6 +136,8 @@ class Tests: XCTestCase {
         enc.put(String.asRFC3339Date("2016-06-10T00:00:00.000Z")(), at: "date")
         enc.put(false, at: "boolValue")
         enc.put(13, at: "number")
+        enc.put(Float(10), at: "float")
+        enc.put(Optional<Float>(), at: "optionalFloat")
         
         coder.finishEncoding()
         
@@ -146,6 +148,8 @@ class Tests: XCTestCase {
         XCTAssertEqual("Nice", try! dec["text"].string())
         XCTAssertEqual(nil, dec["unknownKey"].asString)
         XCTAssertEqual(13, try! dec["number"].int())
+        XCTAssertEqual(10, try! dec["float"].float())
+        XCTAssertEqual(nil, dec["optionalFloat"].asFloat)
         XCTAssertEqual(nil, dec["unknownKey"].asInt)
         XCTAssertEqual(nil, dec["unknownKey"].asDate)
         XCTAssertEqual(nil, dec["unknownKey"].asURL)

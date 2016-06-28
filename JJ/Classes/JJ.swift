@@ -41,9 +41,11 @@ public extension NSDate {
  
 */
 public enum JJError: ErrorType, CustomStringConvertible {
-    /** Throws on can't convert value on path */
+    
+    /** Can't convert value on path */
     case WrongType(v: AnyObject?, path: String, toType: String)
-    /** Throws on can't find object on path */
+    
+    /** Can't find object on path */
     case NotFound(path: String)
 
     public var description: String {
@@ -55,27 +57,32 @@ public enum JJError: ErrorType, CustomStringConvertible {
         }
     }
 }
+
 /**
  - Parameter v: `AnyObject` to parse
  - Returns: `JJVal`
- */
+*/
 public func jj(v: AnyObject?) -> JJVal { return JJVal(v) }
+
 /**
  - Parameter decoder: `NSCoder` to decode
  - Returns: `JJDec`
  */
 public func jj(decoder decoder: NSCoder) -> JJDec { return JJDec(decoder) }
+
 /**
  - Parameter encoder: `NSCoder` to encode
  - Returns: `JJEnc`
  */
 public func jj(encoder encoder: NSCoder) -> JJEnc { return JJEnc(encoder) }
+
 /**
  Struct for store parsing `Array`
  */
 public struct JJArr: CustomDebugStringConvertible {
     private let _path: String
     private let _v: [AnyObject]
+    
     /**
      - Parameters:
         - v: [`AnyObject`]
@@ -90,6 +97,7 @@ public struct JJArr: CustomDebugStringConvertible {
     public subscript (index: Int) -> JJVal {
         return at(index)
     }
+    
     /**
      - Parameter index: Index of element
      - Returns: `JJVal` or `JJVal(nil, path: newPath)` if `index` is out of `Array`
@@ -104,16 +112,20 @@ public struct JJArr: CustomDebugStringConvertible {
     }
 
     // MARK: extension point
+    
     /** Raw value of stored `Array` */
     public var raw: [AnyObject] { return _v }
+    
     /** `String` value of the path in original object */
     public var path: String { return _path }
 
     // MARK: Shortcusts
     /** `True` if raw value isn't equal `nil` */
     public var exists: Bool { return true }
+    
     /** The number of elements the `Array` stores */
     public var count:Int { return _v.count }
+    
     /**
      - Parameters:
         - space: space between parent elements of `Array`
@@ -132,9 +144,11 @@ public struct JJArr: CustomDebugStringConvertible {
         str.removeAtIndex(str.endIndex.advancedBy(-2))
         return str + "\(space)]"
     }
+    
     /** A Textual representation of stored `Array` */
     public var debugDescription: String { return prettyPrint() }
 }
+
 /**
  Struct with optional raw value of `Array`
  */
@@ -160,6 +174,7 @@ public struct JJMaybeArr {
     public var path: String { return _path }
 
 }
+
 /**
  Struct for store parsing `Dictionary`
  */
@@ -228,6 +243,7 @@ public struct JJObj: CustomDebugStringConvertible {
     /** A Textual representation of stored `Dictionary` */
     public var debugDescription: String { return prettyPrint() }
 }
+
 /**
  Struct with optional raw value of `Dictionary`
  */
@@ -255,29 +271,14 @@ public struct JJMaybeObj {
 
     public var exists: Bool { return _v != nil }
 }
+
 /**
- Struct for store parsed value
- 
- Stored types:
- - `Bool`
- - `Int`
- - `UInt`
- - `Number`
- - `Float`
- - `Double`
- - `Dictionary`
- - `Array`
- - `String`
- - `Date`
- - `URL`
- - `Null`
- - `TimeZone`
- 
- To get access to stored value use `raw`
+ Stores traversal path and current node raw value
  */
 public struct JJVal: CustomDebugStringConvertible {
     private let _path: String
     private let _v: AnyObject?
+    
     /**
      - Parameters:
         - v: `AnyObject`
@@ -290,20 +291,24 @@ public struct JJVal: CustomDebugStringConvertible {
     }
 
     // MARK: Bool
+    
     /**
      Representation the raw value as `Bool`.
      
      If this impossible, it is set to `nil`
      */
     public var asBool: Bool? { return _v as? Bool }
+    
     /**
      Represent raw value as `Bool`
      - Parameter defaultValue: Returned `Bool` value, if impossible represent raw value as `Bool` (`false` by default)
      - Returns: `Bool` value
      */
+    
     public func toBool(@autoclosure defaultValue:  () -> Bool = false) -> Bool {
         return asBool ?? defaultValue()
     }
+    
     /**
      - Returns: `Bool` value of raw value
      - Throws: `JJError.wrongType` if the raw value can't represent as `Bool`
@@ -321,15 +326,18 @@ public struct JJVal: CustomDebugStringConvertible {
      
      If this impossible, it is set to `nil`
      */
+    
     public var asInt: Int? { return _v as? Int }
     /**
      Represent raw value as `Int`
      - Parameter defaultValue: Returned `Int` value, if impossible represent raw value as `Int` (`0` by default)
      - Returns: `Int` value
      */
+    
     public func toInt(@autoclosure defaultValue:  () -> Int = 0) -> Int {
         return asInt ?? defaultValue()
     }
+    
     /**
      - Returns: `Int` value of raw value
      - Throws: `JJError.wrongType` if the raw value can't represent as `Int`
@@ -342,12 +350,14 @@ public struct JJVal: CustomDebugStringConvertible {
     }
 
     // MARK: UInt
+    
     /**
      Representation the raw value as `UInt`.
      
      If this impossible, it is set to `nil`
      */
     public var asUInt: UInt? { return _v as? UInt }
+    
     /**
      Represent raw value as `UInt`
      - Parameter defaultValue: Returned `UInt` value, if impossible represent raw value as `UInt` (`0` by default)
@@ -356,6 +366,7 @@ public struct JJVal: CustomDebugStringConvertible {
     public func toUInt(@autoclosure defaultValue:  () -> UInt = 0) -> UInt {
         return asUInt ?? defaultValue()
     }
+    
     /**
      - Returns: `UInt` value of raw value
      - Throws: `JJError.wrongType` if the raw value can't represent as `UInt`
@@ -368,12 +379,14 @@ public struct JJVal: CustomDebugStringConvertible {
     }
 
     // MARK: NSNumber
+    
     /**
      Representation the raw value as `NSNumber`.
-     
+
      If this impossible, it is set to `nil`
      */
     public var asNumber: NSNumber? { return _v as? NSNumber }
+    
     /**
      Represent raw value as `NSNumber`
      - Parameter defaultValue: Returned `NSNumber` value, if impossible represent raw value as `NSNumber` (`0` by default)
@@ -382,6 +395,7 @@ public struct JJVal: CustomDebugStringConvertible {
     public func toNumber(@autoclosure defaultValue:  () -> NSNumber = 0) -> NSNumber {
         return asNumber ?? defaultValue()
     }
+    
     /**
      - Returns: `NSNumber` value of raw value
      - Throws: `JJError.wrongType` if the raw value can't represent as `NSNumber`
@@ -394,12 +408,14 @@ public struct JJVal: CustomDebugStringConvertible {
     }
 
     // MARK: Float
+    
     /**
      Representation the raw value as `Float`.
-     
+
      If this impossible, it is set to `nil`
      */
     public var asFloat: Float? { return _v as? Float }
+    
     /**
      Represent raw value as `Float`
      - Parameter defaultValue: Returned `Float` value, if impossible represent raw value as `Float` (`0` by default)
@@ -408,6 +424,7 @@ public struct JJVal: CustomDebugStringConvertible {
     public func toFloat(@autoclosure defaultValue:  () -> Float = 0) -> Float {
         return asFloat ?? defaultValue()
     }
+    
     /**
      - Returns: `Float` value of raw value
      - Throws: `JJError.wrongType` if the raw value can't represent as `Float`
@@ -420,12 +437,14 @@ public struct JJVal: CustomDebugStringConvertible {
     }
 
     // MARK: Double
+    
     /**
      Representation the raw value as `Double`.
-     
+
      If this impossible, it is set to `nil`
      */
     public var asDouble: Double? { return _v as? Double }
+    
     /**
      Represent raw value as `Double`
      - Parameter defaultValue: Returned `Double` value, if impossible represent raw value as `Double` (`0` by default)
@@ -434,6 +453,7 @@ public struct JJVal: CustomDebugStringConvertible {
     public func toDouble(@autoclosure defaultValue:  () -> Double = 0) -> Double {
         return asDouble ?? defaultValue()
     }
+    
     /**
      - Returns: `Double` value of raw value
      - Throws: `JJError.wrongType` if the raw value can't represent as `Double`
@@ -447,9 +467,10 @@ public struct JJVal: CustomDebugStringConvertible {
 
 
     // MARK: Object
+    
     /**
      Representation the raw value as `JJObj`.
-     
+
      If this impossible, it is set to `nil`
      */
     public var asObj: JJObj? {
@@ -459,6 +480,7 @@ public struct JJVal: CustomDebugStringConvertible {
 
         return nil
     }
+    
     /**
      Represent raw value as `JJObj`
      - Parameter defaultValue: Returned `JJObj` value, if impossible represent raw value as `JJObj` (`JJObj(nil, path: newPath)` by default)
@@ -467,6 +489,7 @@ public struct JJVal: CustomDebugStringConvertible {
     public func toObj() -> JJMaybeObj {
         return JJMaybeObj(asObj, path: _path)
     }
+    
     /**
      - Returns: `JJMaybeObj` value with stored optional `JJObj` of raw value
      - Throws: `JJError.wrongType` if the raw value can't represent as `JJObj`
@@ -480,9 +503,10 @@ public struct JJVal: CustomDebugStringConvertible {
     }
 
     // MARK: Array
+    
     /**
      Representation the raw value as `JJArr`.
-     
+
      If this impossible, it is set to `nil`
      */
     public var asArr: JJArr? {
@@ -491,6 +515,7 @@ public struct JJVal: CustomDebugStringConvertible {
         }
         return nil
     }
+    
     /**
      Represent raw value as `JJArr`
      - Parameter defaultValue: Returned `JJArr` value, if impossible represent raw value as `JJArr` (`JJArr(nil, path: newPath)` by default)
@@ -499,6 +524,7 @@ public struct JJVal: CustomDebugStringConvertible {
     public func toArr() -> JJMaybeArr {
         return JJMaybeArr(asArr, path: _path)
     }
+    
     /**
      - Returns: `JJMaybeArr` value with stored optional `JJArr` of raw value
      - Throws: `JJError.wrongType` if the raw value can't represent as `JJArr`
@@ -511,12 +537,14 @@ public struct JJVal: CustomDebugStringConvertible {
     }
 
     // MARK: String
+    
     /**
      Representation the raw value as `String`.
-     
+
      If this impossible, it is set to `nil`
      */
     public var asString: String? { return _v as? String }
+    
     /**
      Represent raw value as `String`
      - Parameter defaultValue: Returned `String` value, if impossible represent raw value as `String` (Empty string by default)
@@ -525,6 +553,7 @@ public struct JJVal: CustomDebugStringConvertible {
     public func toString(@autoclosure defaultValue:  () -> String = "") -> String {
         return asString ?? defaultValue()
     }
+    
     /**
      - Returns: `String` value of raw value
      - Throws: `JJError.wrongType` if the raw value can't represent as `String`
@@ -537,12 +566,14 @@ public struct JJVal: CustomDebugStringConvertible {
     }
 
     // MARK: Date
+    
     /**
      Representation the raw value as `NSDate`.
-     
+
      If this impossible, it is set to `nil`
      */
     public var asDate: NSDate? { return asString?.asRFC3339Date() }
+    
     /**
      - Returns: `NSDate` value of raw value
      - Throws: `JJError.wrongType` if the raw value can't represent as `Date`
@@ -556,9 +587,10 @@ public struct JJVal: CustomDebugStringConvertible {
     }
 
     // MARK: NSURL
+    
     /**
      Representation the raw value as `NSURL`.
-     
+
      If this impossible, it is set to `nil`
      */
     public var asURL: NSURL? {
@@ -568,6 +600,7 @@ public struct JJVal: CustomDebugStringConvertible {
             return nil
         }
     }
+    
     /**
      Represent raw value as `NSURL`
      - Parameter defaultValue: Returned `NSURL` value, if impossible represent raw value as `NSURL` (`NSURL()` by default)
@@ -576,6 +609,7 @@ public struct JJVal: CustomDebugStringConvertible {
     public func toURL(@autoclosure defaultValue:  () -> NSURL = NSURL()) -> NSURL {
         return asURL ?? defaultValue()
     }
+    
     /**
      - Returns: `NSURL` value of raw value
      - Throws: `JJError.wrongType` if the raw value can't represent as `NSURL`
@@ -589,14 +623,16 @@ public struct JJVal: CustomDebugStringConvertible {
     }
 
     // MARK: Null
+    
     /** 'False' if raw value equal nil */
     public var isNull: Bool { return _v === NSNull() }
 
 
     // MARK: NSTimeZone
+    
     /**
      Representation the raw value as `NSTimeZone`.
-     
+
      If this impossible, it is set to `nil`
      */
     public var asTimeZone: NSTimeZone? {
@@ -608,6 +644,7 @@ public struct JJVal: CustomDebugStringConvertible {
     }
 
     // MARK: Navigation as Object
+    
     /**
      - Returns: JJVal by key if raw value can represent as JJObj
      */
@@ -620,6 +657,7 @@ public struct JJVal: CustomDebugStringConvertible {
     }
 
     // MARK: Navigation as Array
+    
     /**
      - Returns: JJVal by index if raw value can represent as JJArr
      */
@@ -630,16 +668,20 @@ public struct JJVal: CustomDebugStringConvertible {
     public subscript (index: Int) -> JJVal {
         return at(index)
     }
+    
     /** `True` if raw value isn't equal `nil` */
     public var exists: Bool { return _v != nil }
 
     // MARK: extension point
+    
     /** `String` value of the path in original object */
     public var path: String { return _path }
+    
     /** Raw value of stored object */
     public var raw: AnyObject? { return _v }
 
     // MARK: pretty print
+    
     /**
      - Parameters:
         - space: space between parent elements of `Array`
@@ -663,12 +705,16 @@ public struct JJVal: CustomDebugStringConvertible {
     }
 
     // MARK: CustomDebugStringConvertible
+    
     /** A Textual representation of stored value */
     public var debugDescription: String { return prettyPrint() }
 }
+
 /** Struct to encode `NSCoder` values */
 public struct JJEnc {
+    
     private let _enc: NSCoder
+    
     /**
      - Parameter enc: `NSCoder`
      - Returns: `JJEnc`
@@ -676,6 +722,7 @@ public struct JJEnc {
     public init(_ enc: NSCoder) {
         _enc = enc
     }
+    
     /**
      Put `Int` value
      - Parameters:
@@ -685,6 +732,7 @@ public struct JJEnc {
     public func put(v:Int, at: String) {
         _enc.encodeInt32(Int32(v), forKey: at)
     }
+    
     /**
      Put `Bool` value
      - Parameters:
@@ -694,6 +742,7 @@ public struct JJEnc {
     public func put(v:Bool, at: String) {
         _enc.encodeBool(v, forKey: at)
     }
+    
     /**
      Put `AnyObject` value
      - Parameters:
@@ -708,6 +757,7 @@ public struct JJEnc {
 public struct JJDecVal {
     private let _key: String
     private let _dec: NSCoder
+    
     /**
      - Parameters:
         - dec: `NSCoder` to decode
@@ -717,6 +767,7 @@ public struct JJDecVal {
         _key = key
         _dec = dec
     }
+    
     /**
      - Returns: `String` value of encoded value
      - Throws: `JJError.wrongType` if the encoded value can't decoded to `String`
@@ -728,57 +779,89 @@ public struct JJDecVal {
         }
         throw JJError.WrongType(v: v, path: _key, toType: "String")
     }
+    
     /**
      Decode the encoded value as `String`.
      
      If this impossible, it is set to `nil`
      */
     public var asString: String? { return _dec.decodeObjectForKey(_key) as? String }
+    
     /**
      - Returns: `Int` value of encoded value
      - Throws: `JJError.wrongType` if the encoded value can't decoded to `Int`
      */
     public func int() throws -> Int { return Int(_dec.decodeInt32ForKey(_key)) }
+    
     /**
      Decode the encoded value as `Int`.
      
      If this impossible, it is set to `nil`
      */
     public var asInt: Int? { return _dec.decodeObjectForKey(_key) as? Int }
+    
     /**
      Decode the encoded value as `NSDate`.
      
      If this impossible, it is set to `nil`
      */
     public var asDate: NSDate? { return _dec.decodeObjectForKey(_key) as? NSDate }
+    
     /**
      Decode the encoded value as `NSURL`.
      
      If this impossible, it is set to `nil`
      */
     public var asURL: NSURL? { return _dec.decodeObjectForKey(_key) as? NSURL }
+    
     /**
      Decode the encoded value as `NSTimeZone`.
      
      If this impossible, it is set to `nil`
      */
     public var asTimeZone: NSTimeZone? { return _dec.decodeObjectForKey(_key) as? NSTimeZone }
+    
     /**
      - Returns: `Bool` value of encoded value
      - Throws: `JJError.wrongType` if the encoded value can't decoded to `Bool`
      */
     public func bool() throws -> Bool { return _dec.decodeBoolForKey(_key) }
+    
     /**
      Decode raw value to `Bool`
      - Returns: `Bool` value
      */
     public func toBool() -> Bool { return _dec.decodeBoolForKey(_key) }
+    
+    /**
+     - Returns: `Float` value of encoded value
+     - Throws: `JJError.wrongType` if the encoded value can't decoded to `Float`
+     */
+    public func float() throws -> Float {
+        if let num = asFloat {
+            return num
+        }
+        
+        throw JJError.WrongType(v: _dec.valueForKey(_key), path: _key, toType: "Float")
+    }
+    
+    /**
+     Decode raw value to `Float`
+     - Returns: `Float` value
+     */
+    public func toFloat() -> Float { return asFloat ?? 0.0 }
+    
+    public var asFloat: Float? {
+        return _dec.decodeObjectForKey(_key) as? Float
+    }
+    
     /**
      Decode the encoded value as generic value.
      
      If this impossible, it is set to `nil`
      */
     public func decodeAs<T: NSCoding>() -> T? { return _dec.decodeObjectForKey(_key) as? T }
+    
     /**
      - Returns: generic value of encoded value
      - Throws: `JJError.wrongType` if the encoded value can't decoded to needed type
@@ -792,6 +875,7 @@ public struct JJDecVal {
         // TODO: find a way to get type
         throw JJError.WrongType(v: obj, path: _key, toType: "T")
     }
+    
     /**
      - Returns: `NSDate` value of encoded value
      - Throws: `JJError.wrongType` if the encoded value can't decoded to `NSDate`
@@ -812,7 +896,9 @@ public struct JJDecVal {
 }
 
 public struct JJDec {
+    
     private let _dec: NSCoder
+    
     /**
      - Parameter dec: `NSCoder`
      - Returns: `JJDec`
