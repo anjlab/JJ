@@ -594,7 +594,7 @@ public struct JJVal: CustomDebugStringConvertible {
      If this impossible, it is set to `nil`
      */
     public var asURL: NSURL? {
-        if let s = asString, d = NSURL(string: s) {
+        if let s = asString, let d = NSURL(string: s) {
             return d
         } else {
             return nil
@@ -615,7 +615,7 @@ public struct JJVal: CustomDebugStringConvertible {
      - Throws: `JJError.wrongType` if the raw value can't represent as `NSURL`
      */
     public func url() throws -> NSURL {
-        if let s = asString, d = NSURL(string: s) {
+        if let s = asString, let d = NSURL(string: s) {
             return d
         } else {
             throw JJError.WrongType(v: _v, path: _path, toType: "NSURL")
@@ -636,7 +636,7 @@ public struct JJVal: CustomDebugStringConvertible {
      If this impossible, it is set to `nil`
      */
     public var asTimeZone: NSTimeZone? {
-        if let s = asString, d = NSTimeZone(name: s) {
+        if let s = asString, let d = NSTimeZone(name: s) {
             return d
         } else {
             return nil
