@@ -870,7 +870,7 @@ public struct JJDecVal {
     public func toDouble() -> Double { return asDouble ?? 0.0 }
     
     public var asDouble: Double? {
-        return _dec.decodeObject(forKey: _key) as? Double
+        return _dec.decodeObjectForKey(_key) as? Double
     }
     
     /**
@@ -882,7 +882,7 @@ public struct JJDecVal {
             return num
         }
         
-        throw JJError.wrongType(v: _dec.value(forKey: _key) as Any?, path: _key, toType: "Double")
+        throw JJError.WrongType(v: _dec.valueForKey(_key), path: _key, toType: "Double")
     }
     
     /**
