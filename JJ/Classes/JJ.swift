@@ -356,7 +356,15 @@ public struct JJVal: CustomDebugStringConvertible {
      
      If this impossible, it is set to `nil`
      */
-    public var asUInt: UInt? { return _v as? UInt }
+    public var asUInt: UInt? {
+        if let v = _v as? UInt {
+            return v
+        }
+        if let v = _v as? Int {
+            return UInt(v)
+        }
+        return nil
+    }
     
     /**
      Represent raw value as `UInt`
@@ -853,6 +861,28 @@ public struct JJDecVal {
     
     public var asFloat: Float? {
         return _dec.decodeObjectForKey(_key) as? Float
+    }
+    
+    /**
+     Decode raw value to `Double`
+     - Returns: `Double` value
+     */
+    public func toDouble() -> Double { return asDouble ?? 0.0 }
+    
+    public var asDouble: Double? {
+        return _dec.decodeObject(forKey: _key) as? Double
+    }
+    
+    /**
+     - Returns: `Double` value of encoded value
+     - Throws: `JJError.wrongType` if the encoded value can't decoded to `Double`
+     */
+    public func double() throws -> Double {
+        if let num = asDouble {
+            return num
+        }
+        
+        throw JJError.wrongType(v: _dec.value(forKey: _key) as Any?, path: _key, toType: "Double")
     }
     
     /**
