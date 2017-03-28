@@ -51,7 +51,7 @@ public enum JJError: Error, CustomStringConvertible {
     public var description: String {
         switch self {
         case let .wrongType(v: v, path: path, toType: type):
-            return "JJError.WrongType: Can't convert \(v) at path: '\(path)' to type '\(type)'"
+            return "JJError.WrongType: Can't convert \(String(describing: v)) at path: '\(path)' to type '\(type)'"
         case let .notFound(path: path):
             return "JJError.NotFound: No object at path: '\(path)'"
         }
